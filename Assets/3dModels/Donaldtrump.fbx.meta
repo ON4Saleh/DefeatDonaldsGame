@@ -22,7 +22,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -80,7 +80,152 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: Donaldtrump(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0.0000005498229, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: trump_rigCharRoot
+      parentName: Donaldtrump(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BipTrump
+      parentName: trump_rigCharRoot
+      position: {x: -0.027300023, y: 0.04585163, z: 0.6777938}
+      rotation: {x: 0, y: 0, z: 0.7071063, w: 0.70710725}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: BipTrump Pelvis
+      parentName: BipTrump
+      position: {x: 0.00000005587936, y: -0.02730007, z: 0.035373032}
+      rotation: {x: 0.5, y: -0.5, z: -0.5, w: -0.5}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: BipTrump Spine
+      parentName: BipTrump Pelvis
+      position: {x: -0.09670349, y: -0.00026631355, z: 0.0000001335144}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000004, y: 1, z: 1.0000001}
+    - name: BipTrump Spine1
+      parentName: BipTrump Spine
+      position: {x: -0.33873168, y: -0.00018327712, z: -0.0000000023841857}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999976, y: 0.9999999, z: 0.9999998}
+    - name: BipTrump R Clavicle
+      parentName: BipTrump Spine1
+      position: {x: -0.27942345, y: -0.018372955, z: -0.12062804}
+      rotation: {x: 0.7071068, y: -0.000000030908623, z: 0.7071068, w: -0.000000030908623}
+      scale: {x: 1.0000007, y: 0.9999997, z: 1.0000004}
+    - name: BipTrump R UpperArm
+      parentName: BipTrump R Clavicle
+      position: {x: -0.20459291, y: 0.000000076293944, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000006, y: 1.0000004, z: 1.0000005}
+    - name: BipTrump R Forearm
+      parentName: BipTrump R UpperArm
+      position: {x: -0.33161134, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999998, y: 0.9999998, z: 0.9999998}
+    - name: BipTrump R Hand
+      parentName: BipTrump R Forearm
+      position: {x: -0.2759639, y: 0.000000019073486, z: -0.000000076293944}
+      rotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+      scale: {x: 1.0000004, y: 1.0000001, z: 1.0000004}
+    - name: BipTrump R Finger0
+      parentName: BipTrump R Hand
+      position: {x: -0.05435764, y: 0.034599304, z: 0.06001068}
+      rotation: {x: 0, y: 0.38268346, z: 0, w: 0.9238795}
+      scale: {x: 1.0000002, y: 0.99999994, z: 1}
+    - name: BipTrump R Finger1
+      parentName: BipTrump R Hand
+      position: {x: -0.12461033, y: 0.014280396, z: -0.0062820814}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999994}
+    - name: BipTrump Neck
+      parentName: BipTrump Spine1
+      position: {x: -0.27364135, y: 0.040421903, z: 0.0000000834465}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000001, y: 1.0000002, z: 1.0000002}
+    - name: BipTrump Head
+      parentName: BipTrump Neck
+      position: {x: -0.09653282, y: 0.002987976, z: 0.0000000023841857}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000002, y: 0.99999994, z: 0.9999999}
+    - name: BipTrump L Clavicle
+      parentName: BipTrump Spine1
+      position: {x: -0.27942336, y: -0.018373603, z: 0.12062793}
+      rotation: {x: 0.7071068, y: -0.000000030908623, z: -0.7071068, w: 0.000000030908623}
+      scale: {x: 1.0000004, y: 1.0000001, z: 0.9999999}
+    - name: BipTrump L UpperArm
+      parentName: BipTrump L Clavicle
+      position: {x: -0.20459294, y: 0, z: 0.000000076293944}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 0.9999996}
+    - name: BipTrump L Forearm
+      parentName: BipTrump L UpperArm
+      position: {x: -0.3316114, y: -0.000000019073486, z: -0.000000038146972}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.9999999, y: 1.0000002, z: 1.0000002}
+    - name: BipTrump L Hand
+      parentName: BipTrump L Forearm
+      position: {x: -0.2759638, y: 0.000000038146972, z: 0}
+      rotation: {x: 0.7071068, y: 0, z: 0, w: -0.7071068}
+      scale: {x: 1.0000004, y: 1.0000005, z: 1.0000006}
+    - name: BipTrump L Finger0
+      parentName: BipTrump L Hand
+      position: {x: -0.05435768, y: 0.034599304, z: -0.06001068}
+      rotation: {x: 0, y: 0.3826835, z: 0, w: -0.9238795}
+      scale: {x: 0.9999998, y: 1.0000001, z: 1.0000006}
+    - name: BipTrump L Finger1
+      parentName: BipTrump L Hand
+      position: {x: -0.12461033, y: 0.014280396, z: 0.0062821195}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000004, y: 1.0000001, z: 1.0000002}
+    - name: BipTrump R Thigh
+      parentName: BipTrump Pelvis
+      position: {x: -0.00000015258789, y: -0.00000017642975, z: -0.14707975}
+      rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: BipTrump R Calf
+      parentName: BipTrump R Thigh
+      position: {x: -0.29306045, y: 0.000000009536743, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000002, y: 1.0000002, z: 1.0000002}
+    - name: BipTrump R Foot
+      parentName: BipTrump R Calf
+      position: {x: -0.29306057, y: -0.0000000023841857, z: 0.000000009536743}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1.0000004, y: 1.0000002, z: 1.0000004}
+    - name: BipTrump R Toe0
+      parentName: BipTrump R Foot
+      position: {x: -0.106273584, y: 0.15089309, z: 0.000000009536743}
+      rotation: {x: 0, y: 0, z: 0.7071068, w: -0.7071068}
+      scale: {x: 1, y: 0.99999994, z: 1.0000004}
+    - name: BipTrump L Thigh
+      parentName: BipTrump Pelvis
+      position: {x: 0.00000022888183, y: 0.0000002336502, z: 0.14707974}
+      rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+      scale: {x: 1.0000005, y: 1, z: 1.0000004}
+    - name: BipTrump L Calf
+      parentName: BipTrump L Thigh
+      position: {x: -0.2930605, y: 0.000000009536743, z: 0.000000009536743}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 1.0000001, z: 1}
+    - name: BipTrump L Foot
+      parentName: BipTrump L Calf
+      position: {x: -0.29306057, y: -0.0000000047683715, z: 0.000000009536743}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: BipTrump L Toe0
+      parentName: BipTrump L Foot
+      position: {x: -0.10627359, y: 0.15089314, z: 0}
+      rotation: {x: 0, y: 0, z: 0.7071068, w: -0.7071068}
+      scale: {x: 0.9999999, y: 1, z: 1}
+    - name: trump_lp_model
+      parentName: Donaldtrump(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -90,14 +235,14 @@ ModelImporter:
     feetSpacing: 0
     globalScale: 1
     rootMotionBoneName: 
-    hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasTranslationDoF: 1
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
