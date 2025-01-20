@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
     private StateMachine stateMachine;
     private NavMeshAgent navMeshAgent;
     [SerializeField] private WaypointPath path;
+    private Animator animator; 
 
     public NavMeshAgent NavMeshAgent => navMeshAgent;
     public WaypointPath Path => path;
@@ -18,20 +19,16 @@ public class Enemy : MonoBehaviour
     private Vector3 lastKnownPosition;
     public Vector3 LastKnownPos { get => lastKnownPosition; set => lastKnownPosition = value; }
 
-    private Animator animator;  // Reference to the Animator component
-    private int currentWaypointIndex = 0;  // Index of the current waypoint
-
-    private bool isAttacking = false;  // Flag to track if the enemy is attacking
+    private int currentWaypointIndex = 0;
 
     private void Start()
     {
         stateMachine = GetComponent<StateMachine>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();  // Initialize the Animator
+        animator = GetComponent<Animator>(); 
         stateMachine.Initialize();
         player = GameObject.FindGameObjectWithTag("Player");
 
-        // Set the agent to move towards the first waypoint
         if (path.waypoints.Count > 0)
         {
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
@@ -40,17 +37,13 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        // Update state and check if the enemy can see the player
         canSeePlayer();
         currentState = stateMachine.activeState.ToString();
 
-        // Handle animation and movement
         HandleMovement();
 
-        // Check if the enemy has reached the current waypoint
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance && !navMeshAgent.pathPending)
         {
-            // Move to the next waypoint in the path
             currentWaypointIndex = (currentWaypointIndex + 1) % path.waypoints.Count;
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
         }
@@ -84,33 +77,25 @@ public class Enemy : MonoBehaviour
         }
         return false;
     }
-
     private void HandleMovement()
     {
-        if (currentState == "Attack" && !isAttacking)
+        if (currentState == "AttackState" && !animator.GetBool("isShooting"))
         {
-            // Trigger the Fire animation at the start of Attack state
-            animator.SetTrigger("Fire");
-            isAttacking = true;  // Mark that the enemy is attacking
-
-            // Stop the movement when attacking
-            navMeshAgent.velocity = Vector3.zero;  // Set velocity to zero
-            navMeshAgent.isStopped = true;  // Stop the NavMeshAgent from moving
+            animator.SetBool("isShooting", true);
+            Debug.Log("Setting isShooting to true");
+            navMeshAgent.speed = 1.5f;  
         }
-        else if (currentState != "Attack" && isAttacking)
+        else if (currentState != "AttackState" && animator.GetBool("isShooting"))
         {
-            // Reset attacking state when leaving the Attack state
-            isAttacking = false;
+            animator.SetBool("isShooting", false);
+            Debug.Log("Setting isShooting to false");
 
-            // Allow the agent to move again
-            navMeshAgent.isStopped = false;
+            navMeshAgent.speed = 3.5f;  
         }
-
-        // If not attacking, set the movement speed
-        if (currentState != "Attack")
+        if (currentState != "AttackState")
         {
-            float speed = navMeshAgent.velocity.magnitude;
-            animator.SetFloat("Speed", speed);
+            navMeshAgent.SetDestination(player.transform.position);
         }
     }
+
 }
