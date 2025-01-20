@@ -11,13 +11,18 @@ public class PatrolState : BasicState
         {
             waypointIndex = 0;
             enemy.NavMeshAgent.SetDestination(enemy.Path.waypoints[waypointIndex].position);
+            Debug.Log("Patrol started, destination: " + enemy.Path.waypoints[waypointIndex].position);
+        }
+        else
+        {
+            Debug.LogError("No waypoints in the path!");
         }
     }
 
     protected override void Perform()
     {
         PatrolCycle();
-
+        Debug.Log("Current destination: " + enemy.NavMeshAgent.destination);
         if (enemy.canSeePlayer())
         {
             stateMachine.ChangeState(new AttackState());
