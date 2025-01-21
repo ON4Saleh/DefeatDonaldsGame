@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     public float fieldOfView = 85f;
     [SerializeField] string currentState;
 
+    private GameObject EnemyWeaponHolder;
     [SerializeField] private float eyeHeight;
     private Vector3 lastKnownPosition;
     public Vector3 LastKnownPos { get => lastKnownPosition; set => lastKnownPosition = value; }
@@ -34,6 +35,9 @@ public class Enemy : MonoBehaviour
         {
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
         }
+        EnemyWeaponHolder = transform.Find("EnemyWeaponHolder")?.gameObject;
+        Weapon = EnemyWeaponHolder.GetComponentInChildren<Weapon>();
+        
     }
 
     private void Update()
@@ -93,19 +97,21 @@ public class Enemy : MonoBehaviour
                 Debug.Log("Setting isShooting to true");
                 navMeshAgent.speed = 1.5f;
                 Weapon.HandleShooting();
+                EnemyWeaponHolder.gameObject.SetActive(true);
             }
         }
         else if (currentState != "AttackState" && animator.GetBool("isShooting"))
         {
             animator.SetBool("isShooting", false);
             Debug.Log("Setting isShooting to false");
-
+            EnemyWeaponHolder.gameObject.SetActive(false);
             navMeshAgent.speed = 3.5f;
         }
 
         if (currentState != "AttackState")
         {
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
+            EnemyWeaponHolder.gameObject.SetActive(false);
         }
     }
 
