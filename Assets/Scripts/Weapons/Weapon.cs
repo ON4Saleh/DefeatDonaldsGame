@@ -25,14 +25,20 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform playerTransform;
 
     private Animator animator;
-
+    [SerializeField] Vector3 spawnPosition;
+    [SerializeField] Vector3 spawnRotation;
     private enum ShootingMode
     {
         Single,
         Burst,
         Auto
     }
-
+    public enum WeaponType
+    {
+        WaterGun,
+        MoneyGun    
+    }
+    public WeaponType Weapontype;
     [SerializeField] private ShootingMode currentShootingMode;
 
     private void Start()
@@ -56,7 +62,7 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     public void HandleShooting()
