@@ -17,12 +17,12 @@ public class Weapon : MonoBehaviour
     [SerializeField] float reloadTime = 1f;
 
     [SerializeField] private Camera playerCamera;
-    private Enemy enemy;  
+    private Enemy enemy;
 
     [SerializeField] int currentBulletCount;
     [SerializeField] bool canShoot = true;
     [SerializeField] bool isReloading = false;
-    [SerializeField] private Transform playerTransform;  
+    [SerializeField] private Transform playerTransform;
 
     private Animator animator;
 
@@ -67,27 +67,38 @@ public class Weapon : MonoBehaviour
             if (currentShootingMode == ShootingMode.Single && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 StartCoroutine(SingleFire());
+                PlayShootAnimation(true);  // Enable recoil animation
             }
             else if (currentShootingMode == ShootingMode.Burst && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 StartCoroutine(BurstFire());
+                PlayShootAnimation(true);  // Enable recoil animation
             }
             else if (currentShootingMode == ShootingMode.Auto && Input.GetKey(KeyCode.Mouse0))
             {
                 StartCoroutine(AutoFire());
+                PlayShootAnimation(true);  // Enable recoil animation
+            }
+            else if (!Input.GetKey(KeyCode.Mouse0)) // If no mouse input, set idle animation
+            {
+                PlayShootAnimation(false);  // Disable recoil, set idle
             }
         }
         else if (gameObject.CompareTag("Enemy"))
         {
-                StartCoroutine(EnemyBurstFire());
+            StartCoroutine(EnemyBurstFire());
         }
+    }
+
+    private void PlayShootAnimation(bool isShooting)
+    {
+        animator.SetBool("IsShooting", isShooting);  // This will toggle between shooting and idle
     }
 
     private IEnumerator SingleFire()
     {
         canShoot = false;
         FireBullet();
-        animator.SetTrigger("RECOIL");  
         yield return new WaitForSeconds(shootingDelay);
         canShoot = true;
     }
@@ -98,7 +109,6 @@ public class Weapon : MonoBehaviour
         for (int i = 0; i < bulletsPerBurst && currentBulletCount > 0; i++)
         {
             FireBullet();
-            animator.SetTrigger("RECOIL");  
             yield return new WaitForSeconds(shootingDelay);
         }
         yield return new WaitForSeconds(burstDelay - (bulletsPerBurst * shootingDelay));
@@ -111,7 +121,6 @@ public class Weapon : MonoBehaviour
         while (Input.GetKey(KeyCode.Mouse0) && currentBulletCount > 0)
         {
             FireBullet();
-            animator.SetTrigger("RECOIL");
             yield return new WaitForSeconds(shootingDelay);
         }
         canShoot = true;
@@ -154,6 +163,7 @@ public class Weapon : MonoBehaviour
 
         return direction + new Vector3(spreadX, spreadY, 0);
     }
+
     private Vector3 EnemyCalculateDirectionAndSpread()
     {
         Vector3 direction = playerTransform.position - bulletSpawnPoint.position;
@@ -163,6 +173,7 @@ public class Weapon : MonoBehaviour
 
         return direction + new Vector3(spreadX, spreadY, 0);
     }
+
     private void EnemyFireBullet()
     {
         if (currentBulletCount <= 0) return;
@@ -178,6 +189,7 @@ public class Weapon : MonoBehaviour
 
         StartCoroutine(DestroyBulletAfterDelay(bullet, bulletLifetime));
     }
+
     private IEnumerator EnemyBurstFire()
     {
         canShoot = false;
@@ -186,7 +198,6 @@ public class Weapon : MonoBehaviour
             for (int i = 0; i < bulletsPerBurst && currentBulletCount > 0; i++)
             {
                 EnemyFireBullet();
-                animator.SetTrigger("RECOIL");
                 yield return new WaitForSeconds(shootingDelay);
             }
             yield return new WaitForSeconds(burstDelay - (bulletsPerBurst * shootingDelay));
@@ -194,8 +205,6 @@ public class Weapon : MonoBehaviour
 
         canShoot = true;
     }
-
-
 
     private IEnumerator Reload()
     {
