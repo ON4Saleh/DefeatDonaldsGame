@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     [SerializeField] private WaypointPath path;
     private Animator animator;
-
+    private Weapon Weapon;
     public NavMeshAgent NavMeshAgent => navMeshAgent;
     public WaypointPath Path => path;
     public GameObject player;
@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
         stateMachine = GetComponent<StateMachine>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        Weapon = GetComponent<Weapon>();
         stateMachine.Initialize();
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -86,9 +87,13 @@ public class Enemy : MonoBehaviour
     {
         if (currentState == "AttackState" && !animator.GetBool("isShooting"))
         {
-            animator.SetBool("isShooting", true);
-            Debug.Log("Setting isShooting to true");
-            navMeshAgent.speed = 1.5f;
+            if (canSeePlayer())
+            {
+                animator.SetBool("isShooting", true);
+                Debug.Log("Setting isShooting to true");
+                navMeshAgent.speed = 1.5f;
+                Weapon.HandleShooting();
+            }
         }
         else if (currentState != "AttackState" && animator.GetBool("isShooting"))
         {
@@ -97,9 +102,11 @@ public class Enemy : MonoBehaviour
 
             navMeshAgent.speed = 3.5f;
         }
+
         if (currentState != "AttackState")
         {
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
         }
     }
+
 }
