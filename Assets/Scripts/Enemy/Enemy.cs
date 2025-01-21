@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float eyeHeight;
     private Vector3 lastKnownPosition;
     public Vector3 LastKnownPos { get => lastKnownPosition; set => lastKnownPosition = value; }
-
+    private bool trumpPlayed = false;
     private int currentWaypointIndex = 0;
 
     private void Start()
@@ -98,6 +98,8 @@ public class Enemy : MonoBehaviour
                 navMeshAgent.speed = 1.5f;
                 Weapon.HandleShooting();
                 EnemyWeaponHolder.gameObject.SetActive(true);
+                trumpPlayed = true;
+                SoundManager.Instance.PlaySFX("Trump");  
             }
         }
         else if (currentState != "AttackState" && animator.GetBool("isShooting"))
@@ -105,13 +107,15 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isShooting", false);
             Debug.Log("Setting isShooting to false");
             EnemyWeaponHolder.gameObject.SetActive(false);
-            navMeshAgent.speed = 3.5f;
+            navMeshAgent.speed = 3.5f; 
+            trumpPlayed = false;
         }
 
         if (currentState != "AttackState")
         {
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
             EnemyWeaponHolder.gameObject.SetActive(false);
+            trumpPlayed = false;
         }
     }
 

@@ -18,7 +18,7 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] private Camera playerCamera;
     private Enemy enemy;
-
+    private bool shootsound = false;
     [SerializeField] int currentBulletCount;
     [SerializeField] bool canShoot = true;
     [SerializeField] bool isReloading = false;
@@ -67,21 +67,32 @@ public class Weapon : MonoBehaviour
             if (currentShootingMode == ShootingMode.Single && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 StartCoroutine(SingleFire());
-                PlayShootAnimation(true);  // Enable recoil animation
+                PlayShootAnimation(true);
+                shootsound = true;
+                Debug.Log("Playing sound: WaterGun");
+                SoundManager.Instance.PlaySFX("WaterGun");
             }
             else if (currentShootingMode == ShootingMode.Burst && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 StartCoroutine(BurstFire());
-                PlayShootAnimation(true);  // Enable recoil animation
+                PlayShootAnimation(true);
+                shootsound = true;
+                Debug.Log("Playing sound: WaterGun");
+                SoundManager.Instance.PlaySFX("WaterGun");
             }
             else if (currentShootingMode == ShootingMode.Auto && Input.GetKey(KeyCode.Mouse0))
             {
                 StartCoroutine(AutoFire());
-                PlayShootAnimation(true);  // Enable recoil animation
+                PlayShootAnimation(true);
+                shootsound = true;
+                Debug.Log("Playing sound: WaterGun");
+                SoundManager.Instance.PlaySFX("WaterGun");
+
             }
-            else if (!Input.GetKey(KeyCode.Mouse0)) // If no mouse input, set idle animation
+            else if (!Input.GetKey(KeyCode.Mouse0)) 
             {
-                PlayShootAnimation(false);  // Disable recoil, set idle
+                PlayShootAnimation(false);
+                shootsound = false;
             }
         }
         else if (gameObject.CompareTag("Enemy"))
@@ -92,7 +103,7 @@ public class Weapon : MonoBehaviour
 
     private void PlayShootAnimation(bool isShooting)
     {
-        animator.SetBool("IsShooting", isShooting);  // This will toggle between shooting and idle
+        animator.SetBool("IsShooting", isShooting);  
     }
 
     private IEnumerator SingleFire()
@@ -109,6 +120,8 @@ public class Weapon : MonoBehaviour
         for (int i = 0; i < bulletsPerBurst && currentBulletCount > 0; i++)
         {
             FireBullet();
+            SoundManager.Instance.PlaySFX("WaterGun");
+
             yield return new WaitForSeconds(shootingDelay);
         }
         yield return new WaitForSeconds(burstDelay - (bulletsPerBurst * shootingDelay));
@@ -121,6 +134,7 @@ public class Weapon : MonoBehaviour
         while (Input.GetKey(KeyCode.Mouse0) && currentBulletCount > 0)
         {
             FireBullet();
+            SoundManager.Instance.PlaySFX("WaterGun");
             yield return new WaitForSeconds(shootingDelay);
         }
         canShoot = true;
