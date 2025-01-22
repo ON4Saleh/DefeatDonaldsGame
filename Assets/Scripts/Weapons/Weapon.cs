@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
@@ -19,7 +20,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] Camera playerCamera;
     private Enemy enemy;
     private bool shootsound = false;
-    [SerializeField] int currentBulletCount;
+    [SerializeField] int currentBulletCount; 
     [SerializeField] bool canShoot = true;
     [SerializeField] bool isReloading = false;
     [SerializeField] private Transform playerTransform;
@@ -40,9 +41,9 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        currentBulletCount = maxBulletCapacity;
+        currentBulletCount = maxBulletCapacity; 
         enemy = GetComponentInParent<Enemy>();
-        playerCamera = Camera.main; 
+        playerCamera = Camera.main;
     }
 
     private void Update()
@@ -57,9 +58,10 @@ public class Weapon : MonoBehaviour
                 return;
             }
 
-            HandleShooting(); 
+            HandleShooting();
         }
     }
+
 
     private void Awake()
     {
@@ -69,6 +71,7 @@ public class Weapon : MonoBehaviour
     public void HandleShooting()
     {
         if (!canShoot || currentBulletCount <= 0) return;
+
         if (gameObject.CompareTag("Player"))
         {
             if (currentShootingMode == ShootingMode.Single && Input.GetKeyDown(KeyCode.Mouse0))
@@ -76,7 +79,6 @@ public class Weapon : MonoBehaviour
                 StartCoroutine(SingleFire());
                 PlayShootAnimation(true);
                 shootsound = true;
-                Debug.Log("Playing sound: WaterGun");
                 SoundManager.Instance.PlaySFX("WaterGun");
             }
             else if (currentShootingMode == ShootingMode.Burst && Input.GetKeyDown(KeyCode.Mouse0))
@@ -84,7 +86,6 @@ public class Weapon : MonoBehaviour
                 StartCoroutine(BurstFire());
                 PlayShootAnimation(true);
                 shootsound = true;
-                Debug.Log("Playing sound: WaterGun");
                 SoundManager.Instance.PlaySFX("WaterGun");
             }
             else if (currentShootingMode == ShootingMode.Auto && Input.GetKey(KeyCode.Mouse0))
@@ -92,26 +93,21 @@ public class Weapon : MonoBehaviour
                 StartCoroutine(AutoFire());
                 PlayShootAnimation(true);
                 shootsound = true;
-                Debug.Log("Playing sound: WaterGun");
                 SoundManager.Instance.PlaySFX("WaterGun");
-
             }
-            else if (!Input.GetKey(KeyCode.Mouse0)) 
+            else if (!Input.GetKey(KeyCode.Mouse0))
             {
                 PlayShootAnimation(false);
                 shootsound = false;
             }
         }
-        else if (gameObject.CompareTag("Enemy"))
-        {
-            StartCoroutine(EnemyBurstFire());
-        }
     }
 
     private void PlayShootAnimation(bool isShooting)
     {
-        animator.SetBool("IsShooting", isShooting);  
+        animator.SetBool("IsShooting", isShooting);
     }
+
 
     private IEnumerator SingleFire()
     {
@@ -128,7 +124,6 @@ public class Weapon : MonoBehaviour
         {
             FireBullet();
             SoundManager.Instance.PlaySFX("WaterGun");
-
             yield return new WaitForSeconds(shootingDelay);
         }
         yield return new WaitForSeconds(burstDelay - (bulletsPerBurst * shootingDelay));
@@ -147,15 +142,16 @@ public class Weapon : MonoBehaviour
         canShoot = true;
     }
 
+
     private void FireBullet()
     {
         if (currentBulletCount <= 0)
         {
-            Debug.Log("Out of bullets!");
-            return; // Prevent firing if no bullets are left
+            return;
         }
 
-        currentBulletCount--; // Decrease bullet count on firing
+        currentBulletCount--; 
+
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
@@ -165,10 +161,7 @@ public class Weapon : MonoBehaviour
         bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
 
         StartCoroutine(DestroyBulletAfterDelay(bullet, bulletLifetime));
-
-        // Optionally update UI or handle ammo display here
     }
-
     private Vector3 CalculateDirectionAndSpread()
     {
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -190,7 +183,6 @@ public class Weapon : MonoBehaviour
 
         return direction + new Vector3(spreadX, spreadY, 0);
     }
-
     private Vector3 EnemyCalculateDirectionAndSpread()
     {
         Vector3 direction = playerTransform.position - bulletSpawnPoint.position;
@@ -237,12 +229,10 @@ public class Weapon : MonoBehaviour
     {
         isReloading = true;
         canShoot = false;
-        Debug.Log("Reloading...");
         yield return new WaitForSeconds(reloadTime);
-        currentBulletCount = maxBulletCapacity;
+        currentBulletCount = maxBulletCapacity; 
         isReloading = false;
         canShoot = true;
-        Debug.Log("Reload Complete!");
     }
 
     private IEnumerator DestroyBulletAfterDelay(GameObject bullet, float delay)
