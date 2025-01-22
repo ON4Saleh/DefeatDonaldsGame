@@ -19,7 +19,7 @@ public class PickUp : MonoBehaviour
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
-        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red);
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red); // Visualize ray in Scene view
         if (Physics.Raycast(ray, out hit))
         {
             GameObject objectHitbyRay = hit.transform.gameObject;
