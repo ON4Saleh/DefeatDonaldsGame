@@ -1,13 +1,13 @@
-using NUnit.Framework;
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
     public static WeaponManager instance { get; set; }
     [SerializeField] List<GameObject> weaponSlots;
     public GameObject activeweaponSlot;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -19,11 +19,13 @@ public class WeaponManager : MonoBehaviour
             instance = this;
         }
     }
+
     public void Start()
     {
         activeweaponSlot = weaponSlots[0];
         SwitchActiveSlot(0); // Ensure slot 0 is active at start
     }
+
     private void Update()
     {
         foreach (GameObject weaponSlot in weaponSlots)
@@ -48,7 +50,6 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-
     public void PickUpWeapon(GameObject pickedWeapon)
     {
         // Drop the current active weapon (if any)
@@ -60,8 +61,7 @@ public class WeaponManager : MonoBehaviour
 
     private void AddWeaponIntoSlot(GameObject pickedWeapon)
     {
-        // Assign the picked weapon to the active slot, not always the first slot
-        // Use the current active weapon slot instead of the hardcoded weaponSlots[0]
+        // Assign the picked weapon to the active slot
         GameObject currentSlot = activeweaponSlot;
 
         // Set the picked weapon as a child of the active weapon slot
@@ -79,19 +79,18 @@ public class WeaponManager : MonoBehaviour
         weapon.animator.enabled = true;
     }
 
-
     private void dropCurrentWeapon(GameObject pickedWeapon)
     {
         // Check if the current active weapon exists
         if (activeweaponSlot.transform.childCount > 0)
         {
-            // Get the current active weapon in the slot
             var weaponToDrop = activeweaponSlot.transform.GetChild(0).gameObject;
 
             // Mark the current weapon as inactive
             weaponToDrop.GetComponent<Weapon>().weaponisActive = false;
             weaponToDrop.GetComponent<Weapon>().animator.enabled = false;
-            // Move the current weapon to the same position as the picked weapon (for consistency, but could be customized)
+
+            // Move the current weapon to the same position as the picked weapon (for consistency)
             weaponToDrop.transform.SetParent(pickedWeapon.transform.parent);
             weaponToDrop.transform.localPosition = pickedWeapon.transform.localPosition;
             weaponToDrop.transform.localRotation = pickedWeapon.transform.localRotation;
@@ -100,7 +99,6 @@ public class WeaponManager : MonoBehaviour
 
     public void SwitchActiveSlot(int slotNumber)
     {
-        Debug.Log("d");
         // Deactivate the current weapon if it exists
         if (activeweaponSlot.transform.childCount > 0)
         {
@@ -118,5 +116,4 @@ public class WeaponManager : MonoBehaviour
             newWeapon.weaponisActive = true;
         }
     }
-
 }

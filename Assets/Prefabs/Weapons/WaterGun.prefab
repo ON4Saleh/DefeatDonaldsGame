@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2588000045829077755
+--- !u!1 &389535623083593998
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2243622047368688878}
+  - component: {fileID: 4290801456568417562}
   m_Layer: 0
   m_Name: BulletSpawner
   m_TagString: Untagged
@@ -16,22 +16,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2243622047368688878
+--- !u!4 &4290801456568417562
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2588000045829077755}
+  m_GameObject: {fileID: 389535623083593998}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: -0.0005604016, y: -0.000073095856, z: 0.00038984462}
   m_LocalScale: {x: 0.0024365284, y: 0.0024365284, z: 0.0024365284}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1177627527294904971}
+  m_Father: {fileID: 5903931303070962952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1719667531932700000
+--- !u!1001 &6225174527616742115
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c2ffb391052887744aca598339c2986f, type: 3}
       propertyPath: m_Name
-      value: WaterGun
+      value: WaterGun 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c2ffb391052887744aca598339c2986f, type: 3}
       propertyPath: m_TagString
@@ -104,36 +104,36 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c2ffb391052887744aca598339c2986f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2243622047368688878}
+      addedObject: {fileID: 4290801456568417562}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c2ffb391052887744aca598339c2986f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7668718493616175387}
+      addedObject: {fileID: 7758309278820997965}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c2ffb391052887744aca598339c2986f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6127589598556243965}
+      addedObject: {fileID: 3202008049279088695}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c2ffb391052887744aca598339c2986f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5450701023765611261}
+      addedObject: {fileID: 3083008935491280429}
   m_SourcePrefab: {fileID: 100100000, guid: c2ffb391052887744aca598339c2986f, type: 3}
---- !u!4 &1177627527294904971 stripped
+--- !u!4 &5903931303070962952 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c2ffb391052887744aca598339c2986f, type: 3}
-  m_PrefabInstance: {fileID: 1719667531932700000}
+  m_PrefabInstance: {fileID: 6225174527616742115}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1953459787560792113 stripped
+--- !u!1 &6531673641047478194 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c2ffb391052887744aca598339c2986f, type: 3}
-  m_PrefabInstance: {fileID: 1719667531932700000}
+  m_PrefabInstance: {fileID: 6225174527616742115}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &7668718493616175387
+--- !u!95 &7758309278820997965
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1953459787560792113}
+  m_GameObject: {fileID: 6531673641047478194}
   m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: fbecfe9f2a39a7a44bcd7a3b838e7d28, type: 2}
@@ -148,20 +148,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6127589598556243965
+--- !u!114 &3202008049279088695
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1953459787560792113}
+  m_GameObject: {fileID: 6531673641047478194}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9c9612f7ec839f4885b50a8b13b89a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 2966494938671996997, guid: f1d97419295422f479a8cc86d1526e43, type: 3}
-  bulletSpawnPoint: {fileID: 2243622047368688878}
+  bulletSpawnPoint: {fileID: 4290801456568417562}
   bulletSpeed: 100
   bulletLifetime: 3
   shootingDelay: 0.2
@@ -177,14 +177,15 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   spawnPosition: {x: 0.3389998, y: 0.06999969, z: 0.7689996}
   spawnRotation: {x: -90, y: 90, z: 0}
+  weaponisActive: 0
   currentShootingMode: 1
---- !u!65 &5450701023765611261
+--- !u!65 &3083008935491280429
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1953459787560792113}
+  m_GameObject: {fileID: 6531673641047478194}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] int maxBulletCapacity = 50;
     [SerializeField] float reloadTime = 1f;
 
-    [SerializeField] private Camera playerCamera;
+    [SerializeField] Camera playerCamera;
     private Enemy enemy;
     private bool shootsound = false;
     [SerializeField] int currentBulletCount;
@@ -42,6 +42,7 @@ public class Weapon : MonoBehaviour
     {
         currentBulletCount = maxBulletCapacity;
         enemy = GetComponentInParent<Enemy>();
+        playerCamera = Camera.main; 
     }
 
     private void Update()
@@ -148,9 +149,13 @@ public class Weapon : MonoBehaviour
 
     private void FireBullet()
     {
-        if (currentBulletCount <= 0) return;
+        if (currentBulletCount <= 0)
+        {
+            Debug.Log("Out of bullets!");
+            return; // Prevent firing if no bullets are left
+        }
 
-        currentBulletCount--;
+        currentBulletCount--; // Decrease bullet count on firing
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
@@ -160,6 +165,8 @@ public class Weapon : MonoBehaviour
         bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
 
         StartCoroutine(DestroyBulletAfterDelay(bullet, bulletLifetime));
+
+        // Optionally update UI or handle ammo display here
     }
 
     private Vector3 CalculateDirectionAndSpread()
