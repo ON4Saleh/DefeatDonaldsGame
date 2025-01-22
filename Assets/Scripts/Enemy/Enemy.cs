@@ -62,19 +62,16 @@ public class Enemy : MonoBehaviour
         {
             float distance = Vector3.Distance(transform.position, player.transform.position);
 
-            // ???? ??? ???? ??????? ??? ???? ??????
             if (distance < sightDistance)
             {
                 Vector3 targetDirection = player.transform.position - transform.position - Vector3.up * eyeHeight;
                 float angleToPlayer = Vector3.Angle(targetDirection, transform.forward);
 
-                // ???? ?? ?? ?????? ?? ????? ??????
                 if (angleToPlayer >= -fieldOfView && angleToPlayer <= fieldOfView)
                 {
                     Ray ray = new Ray(transform.position + (Vector3.up * eyeHeight), targetDirection);
                     RaycastHit hitInfo;
 
-                    // ???? ?? ?? ?????? ????? ???????
                     if (Physics.Raycast(ray, out hitInfo, sightDistance))
                     {
                         if (hitInfo.transform.gameObject == player)
