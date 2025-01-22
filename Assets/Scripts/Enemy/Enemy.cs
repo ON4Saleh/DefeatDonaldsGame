@@ -61,13 +61,13 @@ public class Enemy : MonoBehaviour
         if (player != null)
         {
             float distance = Vector3.Distance(transform.position, player.transform.position);
-            Debug.Log("Checking player visibility. Distance: " + distance);
+           
 
             if (distance < sightDistance)
             {
                 Vector3 targetDirection = player.transform.position - transform.position - Vector3.up * eyeHeight;
                 float angleToPlayer = Vector3.Angle(targetDirection, transform.forward);
-                Debug.Log("Angle to player: " + angleToPlayer);
+               
                 if (angleToPlayer >= -fieldOfView && angleToPlayer <= fieldOfView)
                 {
                     Ray ray = new Ray(transform.position + (Vector3.up * eyeHeight), targetDirection);
@@ -77,7 +77,6 @@ public class Enemy : MonoBehaviour
                     {
                         if (hitInfo.transform.gameObject == player)
                         {
-                            Debug.Log("Player spotted!");
                             return true;
                         }
                     }
@@ -105,7 +104,6 @@ public class Enemy : MonoBehaviour
         else if (currentState != "AttackState" && animator.GetBool("isShooting"))
         {
             animator.SetBool("isShooting", false);
-            Debug.Log("Setting isShooting to false");
             EnemyWeaponHolder.gameObject.SetActive(false);
             navMeshAgent.speed = 3.5f; 
             trumpPlayed = false;

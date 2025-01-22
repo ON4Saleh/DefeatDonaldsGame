@@ -24,8 +24,11 @@ public class Weapon : MonoBehaviour
     [SerializeField] bool isReloading = false;
     [SerializeField] private Transform playerTransform;
 
-    private Animator animator;
+    internal Animator animator;
 
+    public Vector3 spawnPosition;  
+    public Vector3 spawnRotation;
+    public bool weaponisActive;
     private enum ShootingMode
     {
         Single,
@@ -43,20 +46,23 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if (isReloading) return;
-
-        if (Input.GetKeyDown(KeyCode.R) && currentBulletCount < maxBulletCapacity)
+        if (weaponisActive)
         {
-            StartCoroutine(Reload());
-            return;
-        }
+            if (isReloading) return;
 
-        HandleShooting();
+            if (Input.GetKeyDown(KeyCode.R) && currentBulletCount < maxBulletCapacity)
+            {
+                StartCoroutine(Reload());
+                return;
+            }
+
+            HandleShooting(); 
+        }
     }
 
     private void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     public void HandleShooting()
