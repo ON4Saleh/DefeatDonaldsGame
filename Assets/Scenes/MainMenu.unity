@@ -1858,6 +1858,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 664214450}
+  - {fileID: 1171265214}
+  - {fileID: 1740094596}
+  - {fileID: 969521815}
   m_Father: {fileID: 1697220952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2498,11 +2501,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 363623852}
-  m_Father: {fileID: 1697220952}
+  m_Father: {fileID: 689362010}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 536, y: -388.30005}
+  m_AnchoredPosition: {x: -8.469727, y: -186.33002}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &969521816
@@ -2896,11 +2899,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1949535538}
-  m_Father: {fileID: 1697220952}
+  m_Father: {fileID: 689362010}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 536, y: -25}
+  m_AnchoredPosition: {x: -8.469727, y: 176.97003}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171265215
@@ -3043,8 +3046,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b75487dd37182194dbe230571127496b, type: 3}
-  m_Resource: {fileID: 8300000, guid: b75487dd37182194dbe230571127496b, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -4070,9 +4073,6 @@ RectTransform:
   - {fileID: 297831668}
   - {fileID: 1173206350}
   - {fileID: 689362010}
-  - {fileID: 1171265214}
-  - {fileID: 1740094596}
-  - {fileID: 969521815}
   m_Father: {fileID: 968679911}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4229,11 +4229,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1574523410}
-  m_Father: {fileID: 1697220952}
+  m_Father: {fileID: 689362010}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 536, y: -205.71399}
+  m_AnchoredPosition: {x: -8.469727, y: -3.7439575}
   m_SizeDelta: {x: 500, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1740094597
