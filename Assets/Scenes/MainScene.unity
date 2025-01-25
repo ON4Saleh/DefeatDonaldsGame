@@ -648,7 +648,7 @@ GameObject:
   - component: {fileID: 305388507}
   m_Layer: 0
   m_Name: ------Player-----
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1582,6 +1582,29 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4207253686661344062, guid: 2f0d4c81425446d4e8a64500a9c71b30, type: 3}
   m_PrefabInstance: {fileID: 3770567614676213781}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &597510992
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597510986}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &628039616 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 71d6cfbbaa166b642a811bbebcdf1b03, type: 3}
@@ -3200,7 +3223,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 4647af61a19e10b418bff3297e859780, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 31343a679f3e8a84884dca4a88d4015b, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1437864309
 Transform:
@@ -5221,13 +5244,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 450785937202127315, guid: 2f0d4c81425446d4e8a64500a9c71b30, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6727595840618276996, guid: 2f0d4c81425446d4e8a64500a9c71b30, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2028305949}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2269775182013075016, guid: 2f0d4c81425446d4e8a64500a9c71b30, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 597510992}
   m_SourcePrefab: {fileID: 100100000, guid: 2f0d4c81425446d4e8a64500a9c71b30, type: 3}
 --- !u!4 &5173224829155223687 stripped
 Transform:
@@ -5246,6 +5273,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3070497518514655896, guid: ede4c66cab245aa4e832e243725d3a71, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 1309910605144772, guid: 27ce25370e5628e4097b7cb95b3a151d, type: 3}
     - target: {fileID: 3070497518514655896, guid: ede4c66cab245aa4e832e243725d3a71, type: 3}
       propertyPath: playerTransform
       value: 

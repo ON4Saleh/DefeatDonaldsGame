@@ -101,6 +101,10 @@ public class Weapon : MonoBehaviour
                 shootsound = false;
             }
         }
+        else if (gameObject.CompareTag("Enemy"))
+        {
+
+        }
     }
 
     private void PlayShootAnimation(bool isShooting)
@@ -204,21 +208,36 @@ public class Weapon : MonoBehaviour
 
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
-
+        Debug.Log("Bullet Fired");
         StartCoroutine(DestroyBulletAfterDelay(bullet, bulletLifetime));
     }
+    private void OnDrawGizmos()
+    {
+        if (bulletSpawnPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(bulletSpawnPoint.position, bulletSpawnPoint.position + bulletSpawnPoint.forward * 10f);
+        }
+    }
 
-    private IEnumerator EnemyBurstFire()
+    public IEnumerator EnemyBurstFire()
     {
         canShoot = false;
-        if (enemy.canSeePlayer())
+
+        // ????? ?? ????? ????? ????? ????? ??? ??????
+        while (enemy.canSeePlayer())
         {
-            for (int i = 0; i < bulletsPerBurst && currentBulletCount > 0; i++)
+            for (int i = 0; i < bulletsPerBurst; i++)
             {
-                EnemyFireBullet();
-                yield return new WaitForSeconds(shootingDelay);
+                EnemyFireBullet();  // ???? ???????
+                yield return new WaitForSeconds(shootingDelay);  // ????? ??? ?? ????? ?????
             }
-            yield return new WaitForSeconds(burstDelay - (bulletsPerBurst * shootingDelay));
+
+            // ????? ????? ??? ????? ??? burst (3 ?????) ?? ??? ???????
+            yield return new WaitForSeconds(burstDelay);
+
+            // ????? ????? ??? ????? ??? burst ??????
+            yield return new WaitForSeconds(1f);
         }
 
         canShoot = true;

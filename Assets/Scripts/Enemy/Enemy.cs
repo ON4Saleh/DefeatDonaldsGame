@@ -98,8 +98,11 @@ public class Enemy : MonoBehaviour
                 Weapon.HandleShooting();
                 EnemyWeaponHolder.gameObject.SetActive(true);
                 trumpPlayed = true;
-                SoundManager.Instance.PlaySFX("Trump");  
+                SoundManager.Instance.PlaySFX("Trump");
             }
+            // ????? ???? ????? ??????? ?? ????? ???
+            StartCoroutine(Weapon.EnemyBurstFire());  // ????? ???? ????? ??????? ?? ??? Burst
+        
         }
         else if (currentState != "AttackState" && animator.GetBool("isShooting"))
         {
