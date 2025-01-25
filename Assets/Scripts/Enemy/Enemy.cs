@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour
         {
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
         }
-        EnemyWeaponHolder = transform.Find("EnemyWeaponHolder")?.gameObject;
+        EnemyWeaponHolder = transform.GetComponentInChildren<Transform>().Find("EnemyWeaponHolder")?.gameObject;
         Weapon = EnemyWeaponHolder.GetComponentInChildren<Weapon>();
         
     }
