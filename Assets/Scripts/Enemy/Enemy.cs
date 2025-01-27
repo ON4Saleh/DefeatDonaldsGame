@@ -19,8 +19,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float eyeHeight;
     private Vector3 lastKnownPosition;
     public Vector3 LastKnownPos { get => lastKnownPosition; set => lastKnownPosition = value; }
-    private bool trumpPlayed = false;
     private int currentWaypointIndex = 0;
+
+    public string enemyName;
+    public float enemyWaterLevel = 1000;
+    public float enemyMaxWaterLevel = 1000;
+    public float enemyDamage;
+    public float enemyMoneyLevel = 10000;
+    public float enemyMaxMoneyLevel = 10000;
 
     private void Start()
     {
@@ -37,7 +43,7 @@ public class Enemy : MonoBehaviour
         }
         EnemyWeaponHolder = transform.GetComponentInChildren<Transform>().Find("EnemyWeaponHolder")?.gameObject;
         Weapon = EnemyWeaponHolder.GetComponentInChildren<Weapon>();
-        
+
     }
 
     private void Update()
@@ -93,31 +99,62 @@ public class Enemy : MonoBehaviour
             if (canSeePlayer())
             {
                 animator.SetBool("isShooting", true);
-                Debug.Log("Setting isShooting to true");
                 navMeshAgent.speed = 1.5f;
                 Weapon.HandleShooting();
                 EnemyWeaponHolder.gameObject.SetActive(true);
-                trumpPlayed = true;
+             
                 SoundManager.Instance.PlaySFX("Trump");
             }
-            // ????? ???? ????? ??????? ?? ????? ???
-            StartCoroutine(Weapon.EnemyBurstFire());  // ????? ???? ????? ??????? ?? ??? Burst
-        
+            StartCoroutine(Weapon.EnemyBurstFire()); 
         }
         else if (currentState != "AttackState" && animator.GetBool("isShooting"))
         {
             animator.SetBool("isShooting", false);
             EnemyWeaponHolder.gameObject.SetActive(false);
-            navMeshAgent.speed = 3.5f; 
-            trumpPlayed = false;
+            navMeshAgent.speed = 3.5f;
+        
         }
 
         if (currentState != "AttackState")
         {
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
             EnemyWeaponHolder.gameObject.SetActive(false);
-            trumpPlayed = false;
+    
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                if (enemyName == "Duck")
+                {
+                    playerController.waterLevel -= 10;
+                    enemyWaterLevel -= 30;
+                    playerController.score += 20;
+
+                    if (enemyWaterLevel <= 0)
+                    {
+                        Destroy(gameObject);
+                        playerController.waterLevel += 1000;
+                    }
+                }
+                else if (enemyName == "Donald")
+                {
+                    playerController.moneyLevel -= enemyDamage;
+                    enemyMoneyLevel -= 30;
+                    playerController.score += 20;
+
+                    if (enemyMoneyLevel <= 0)
+                    {
+                        Destroy(gameObject);
+                        playerController.moneyLevel += 10000;
+                    }
+                }
+            }
+        }
+    }
 }

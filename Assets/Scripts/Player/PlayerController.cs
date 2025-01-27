@@ -1,17 +1,55 @@
 using UnityEngine;
+using static Bullet;
 
 public class PlayerController : MonoBehaviour
 {
-    private float playerSpeed = 5f;
-    private CharacterController characterController;
-    private bool isGrounded;
-    private float gravity = -9.8f;
-    private Vector3 playerVelocity;
-    private float jumpHeight = 2f;
-    [SerializeField] private LayerMask groundLayer;
+    [Header("Player Movement")]
+    [SerializeField] float playerSpeed = 5f;
+    [SerializeField] CharacterController characterController;
+    [SerializeField] bool isGrounded;
+    [SerializeField] float gravity = -9.8f;
+    [SerializeField] Vector3 playerVelocity;
+    [SerializeField] float jumpHeight = 2f;
+    [Header("Player Stats")]
+    public int score = 0;
+    public float waterLevel = 1000f;
+    public float moneyLevel = 10000f;
+    [Header("Player Respawn")]
+    [SerializeField] int respawnAttempts = 2;
+    [SerializeField] Vector3 initialPosition;
+
+    private Enemy enemy;
+    private Bullet bullet;
     private void Start()
     {
         InitializeComponents();
+        initialPosition = transform.position; 
+    }
+
+    private void Update()
+    {
+        if (waterLevel <= 0)
+        {
+            RespawnPlayer();
+        }
+    }
+    public void RespawnPlayer()
+    {
+        if (respawnAttempts > 0)
+        {
+            respawnAttempts--;
+            transform.position = initialPosition;
+            score -= 50;
+            waterLevel = 1000f; 
+        }
+        else
+        {
+            GameOver();
+        }
+    }
+    private void GameOver()
+    {
+        Debug.Log("Game Over");
     }
 
     private void InitializeComponents()
@@ -29,13 +67,12 @@ public class PlayerController : MonoBehaviour
 
         ApplyGravity();
     }
-
     public void Jump()
     {
-        if (isGrounded )
+        if (isGrounded)
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-           
+
         }
     }
 
@@ -53,5 +90,51 @@ public class PlayerController : MonoBehaviour
     {
         playerVelocity.y += gravity * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
+    }
+    public void HandleBulletHit(GameObject target, string targetTag)
+    {
+        if (bullet.bulletType == BulletType.PlayerBullet && targetTag == "Enemy")
+        {
+            HandlePlayerBulletHit(target);
+        }
+        else if (bullet.bulletType == BulletType.EnemyBullet && targetTag == "Player")
+        {
+            HandleEnemyBulletHit(target);
+        }
+    }
+
+    private void HandlePlayerBulletHit(GameObject enemy)
+    {
+        Enemy enemyStats = enemy.GetComponent<Enemy>();
+        if (enemyStats != null)
+        {
+            if (enemy.name == "Duck")
+            {
+                enemyStats.enemyWaterLevel -= 30;
+                waterLevel -= 10;
+                score += 20;
+
+                if (enemyStats.enemyWaterLevel <= 0)
+                {
+                    Destroy(enemy);
+                    waterLevel += 1000;
+                }
+            }
+        }
+    }
+
+    private void HandleEnemyBulletHit(GameObject player)
+    {
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            waterLevel -= enemy.enemyDamage;
+            score -= 50;
+
+            if (waterLevel <= 0)
+            {
+                RespawnPlayer();
+            }
+        }
     }
 }

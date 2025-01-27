@@ -58,11 +58,17 @@ public class PatrolState : BasicState
     {
         return enemy.NavMeshAgent.remainingDistance < ARRIVAL_DISTANCE;
     }
-
     private void SetNextWaypoint()
     {
+        if (enemy.Path == null || enemy.Path.waypoints == null || enemy.Path.waypoints.Count == 0)
+        {
+            Debug.LogError($"{enemy.name}: Invalid Path or waypoints!");
+            return;
+        }
+
         currentWaypointIndex = (currentWaypointIndex + 1) % enemy.Path.waypoints.Count;
         Vector3 nextWaypoint = enemy.Path.waypoints[currentWaypointIndex].position;
         enemy.NavMeshAgent.SetDestination(nextWaypoint);
     }
+
 }

@@ -5,7 +5,6 @@ public class StateMachine : MonoBehaviour
     public BasicState activeState;
     private Enemy enemy;
 
-    // ????? property ?????? ??? ??? ?????? ???????
     public string CurrentStateName => activeState?.GetType().Name;
 
     private void Start()
@@ -13,7 +12,6 @@ public class StateMachine : MonoBehaviour
         enemy = GetComponent<Enemy>();
         if (enemy == null)
         {
-            Debug.LogError($"{gameObject.name}: Enemy component not found!");
             enabled = false;
             return;
         }
@@ -39,7 +37,5 @@ public class StateMachine : MonoBehaviour
         activeState = newState;
         activeState.Initialize(enemy, this);
         activeState.EnterState();
-
-        Debug.Log($"{gameObject.name} changing to {newState.GetType().Name}");
     }
 }

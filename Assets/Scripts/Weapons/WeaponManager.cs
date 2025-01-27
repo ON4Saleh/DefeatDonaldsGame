@@ -63,7 +63,7 @@ public class WeaponManager : MonoBehaviour
         Weapon weapon = pickedWeapon.GetComponent<Weapon>();
         pickedWeapon.transform.localPosition = new Vector3(weapon.spawnPosition.x, weapon.spawnPosition.y, weapon.spawnPosition.z);
         pickedWeapon.transform.localRotation = Quaternion.Euler(weapon.spawnRotation.x, weapon.spawnRotation.y, weapon.spawnRotation.z);
-        weapon.weaponisActive = true;  // ???? ?? ?? ?????? ?????? ???
+        weapon.weaponisActive = true;  
         weapon.animator.enabled = true;
     }
 
@@ -87,7 +87,6 @@ public class WeaponManager : MonoBehaviour
         {
             Weapon currentWeapon = activeweaponSlot.transform.GetChild(0).GetComponent<Weapon>();
             currentWeapon.weaponisActive = false;
-            Debug.Log("Deactivating current weapon");
         }
 
         activeweaponSlot = weaponSlots[slotNumber];
@@ -96,7 +95,6 @@ public class WeaponManager : MonoBehaviour
         {
             Weapon newWeapon = activeweaponSlot.transform.GetChild(0).GetComponent<Weapon>();
             newWeapon.weaponisActive = true;
-            Debug.Log("Activating new weapon");
         }
     }
 

@@ -20,10 +20,7 @@ public class WaypointPath : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        // Remove null waypoints
         waypoints.RemoveAll(wp => wp == null);
-
-        // Validate values
         waypointSize = Mathf.Max(0.1f, waypointSize);
         labelSize = Mathf.Max(10f, labelSize);
     }
@@ -52,11 +49,9 @@ public class WaypointPath : MonoBehaviour
         {
             if (waypoints[i] == null) continue;
 
-            // Draw waypoint sphere
             Gizmos.color = pathColor;
             Gizmos.DrawWireSphere(waypoints[i].position, waypointSize);
 
-            // Draw number label
             if (drawNumbers)
             {
                 GUIStyle labelStyle = new GUIStyle
@@ -69,14 +64,12 @@ public class WaypointPath : MonoBehaviour
                 Handles.Label(waypoints[i].position, i.ToString(), labelStyle);
             }
 
-            // Draw lines between waypoints
             if (i > 0 && waypoints[i - 1] != null)
             {
                 Gizmos.DrawLine(waypoints[i - 1].position, waypoints[i].position);
             }
         }
 
-        // Draw loop line if enabled
         if (drawAsLoop && waypoints.Count > 1 &&
             waypoints[0] != null && waypoints[waypoints.Count - 1] != null)
         {
@@ -84,7 +77,6 @@ public class WaypointPath : MonoBehaviour
         }
     }
 
-    // Helper methods for runtime use
     public Vector3 GetWaypointPosition(int index)
     {
         if (IsValidWaypointIndex(index))

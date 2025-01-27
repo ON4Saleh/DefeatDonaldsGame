@@ -6,11 +6,15 @@ TagManager:
   tags:
   - Target
   - Enemy
+  - PlayerWeapon
+  - Bullet
+  - EnemyWeapon
+  - Box
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
