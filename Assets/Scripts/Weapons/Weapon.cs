@@ -69,7 +69,7 @@ public class Weapon : MonoBehaviour
     public void HandleShooting()
     {
         if (!canShoot || currentBulletCount <= 0) return;
-        if (gameObject.CompareTag("Player"))
+        if (gameObject.CompareTag("PlayerWeapon"))
         {
             if (currentShootingMode == ShootingMode.Single && Input.GetKeyDown(KeyCode.Mouse0))
             {
@@ -101,7 +101,7 @@ public class Weapon : MonoBehaviour
                 shootsound = false;
             }
         }
-        else if (gameObject.CompareTag("Enemy"))
+        else if (gameObject.CompareTag("EnemyWeapon"))
         {
 
         }

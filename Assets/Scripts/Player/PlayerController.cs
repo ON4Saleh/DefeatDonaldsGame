@@ -8,9 +8,7 @@ public class PlayerController : MonoBehaviour
     private float gravity = -9.8f;
     private Vector3 playerVelocity;
     private float jumpHeight = 2f;
-    private int jumpCount = 0;
-    private int maxJumps = 2; 
-
+    [SerializeField] private LayerMask groundLayer;
     private void Start()
     {
         InitializeComponents();
@@ -34,10 +32,10 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        if (isGrounded || jumpCount < maxJumps)
+        if (isGrounded )
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            jumpCount++;
+           
         }
     }
 
@@ -48,7 +46,6 @@ public class PlayerController : MonoBehaviour
         if (isGrounded && playerVelocity.y < 0)
         {
             playerVelocity.y = -2f;
-            jumpCount = 0; 
         }
     }
 

@@ -11,8 +11,8 @@ public abstract class BasicState
 
     public void Initialize(Enemy enemyInstance, StateMachine stateMachineInstance)
     {
-        enemy = enemyInstance;
-        stateMachine = stateMachineInstance;
+        this.enemy = enemyInstance;
+        this.stateMachine = stateMachineInstance;
     }
 
     public void EnterState() => Enter();

@@ -4,43 +4,101 @@ public class AttackState : BasicState
 {
     private float moveTimer;
     private float losePlayerTimer;
+    private const float MAX_LOSE_TIME = 8f;
+    private const float MIN_MOVE_TIME = 3f;
+    private const float MAX_MOVE_TIME = 7f;
+    private const float MOVE_RADIUS = 5f;
 
     protected override void Enter()
     {
-    }
-
-    protected override void Exit()
-    {
-        enemy.NavMeshAgent.ResetPath();
-        moveTimer = 0;
-        losePlayerTimer = 0;
+        ResetTimers();
     }
 
     protected override void Perform()
     {
         if (enemy.canSeePlayer())
         {
-            losePlayerTimer = 0;
-            moveTimer += Time.deltaTime;
-            enemy.NavMeshAgent.SetDestination(enemy.player.transform.position);
-
-            if (moveTimer > Random.Range(3, 7))
-            {
-                enemy.NavMeshAgent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 5));
-                moveTimer = 0;
-            }
-            enemy.transform.LookAt(enemy.player.transform);
-
-            enemy.LastKnownPos = enemy.player.transform.position;
+            HandleVisiblePlayer();
         }
         else
         {
-            losePlayerTimer += Time.deltaTime;
+            HandleLostPlayer();
+        }
+    }
 
-            if (losePlayerTimer > 8)
-            {
-                stateMachine.ChangeState(new SearchState());
-            }
+    protected override void Exit()
+    {
+        enemy.NavMeshAgent.ResetPath();
+        ResetTimers();
+    }
+
+    private void ResetTimers()
+    {
+        moveTimer = 0;
+        losePlayerTimer = 0;
+    }
+
+    private void HandleVisiblePlayer()
+    {
+        losePlayerTimer = 0;
+        moveTimer += Time.deltaTime;
+
+        UpdateLastKnownPosition();
+        RotateTowardsPlayer();
+
+        if (ShouldRepositionEnemy())
+        {
+            RepositionEnemy();
+        }
+        else
+        {
+            ChasePlayer();
+        }
+    }
+
+    private void HandleLostPlayer()
+    {
+        losePlayerTimer += Time.deltaTime;
+        if (losePlayerTimer > MAX_LOSE_TIME)
+        {
+            stateMachine.ChangeState(new SearchState());
+        }
+    }
+
+    private void UpdateLastKnownPosition()
+    {
+        if (enemy.player != null)
+        {
+            enemy.LastKnownPos = enemy.player.transform.position;
+        }
+    }
+
+    private void RotateTowardsPlayer()
+    {
+        if (enemy.player != null)
+        {
+            enemy.transform.LookAt(enemy.player.transform);
+        }
+    }
+
+    private bool ShouldRepositionEnemy()
+    {
+        return moveTimer > Random.Range(MIN_MOVE_TIME, MAX_MOVE_TIME);
+    }
+
+    private void RepositionEnemy()
+    {
+        Vector3 randomPosition = enemy.transform.position + (Random.insideUnitSphere * MOVE_RADIUS);
+        randomPosition.y = enemy.transform.position.y;
+        enemy.NavMeshAgent.SetDestination(randomPosition);
+        moveTimer = 0;
+    }
+
+    private void ChasePlayer()
+    {
+        if (enemy.player != null)
+        {
+            enemy.NavMeshAgent.SetDestination(enemy.player.transform.position);
         }
     }
 }

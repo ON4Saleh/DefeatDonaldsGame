@@ -2,31 +2,28 @@ using UnityEngine;
 
 public class PatrolState : BasicState
 {
-    private int waypointIndex;
+    private int currentWaypointIndex;
     private float waitTimer;
+    private const float WAIT_TIME = 3f;
+    private const float ARRIVAL_DISTANCE = 0.2f;
 
     protected override void Enter()
     {
-        if (enemy.Path.waypoints.Count > 0)
-        {
-            waypointIndex = 0;
-            enemy.NavMeshAgent.SetDestination(enemy.Path.waypoints[waypointIndex].position);
-            Debug.Log("Patrol started, destination: " + enemy.Path.waypoints[waypointIndex].position);
-        }
-        else
-        {
-            Debug.LogError("No waypoints in the path!");
-        }
+        if (!ValidatePatrolPath()) return;
+        SetNextWaypoint();
     }
 
     protected override void Perform()
     {
-        PatrolCycle();
-        Debug.Log("Current destination: " + enemy.NavMeshAgent.destination);
+        if (!ValidatePatrolPath()) return;
+
         if (enemy.canSeePlayer())
         {
             stateMachine.ChangeState(new AttackState());
+            return;
         }
+
+        HandlePatrolCycle();
     }
 
     protected override void Exit()
@@ -35,17 +32,37 @@ public class PatrolState : BasicState
         waitTimer = 0;
     }
 
-    private void PatrolCycle()
+    private bool ValidatePatrolPath()
     {
-        waitTimer += Time.deltaTime;
-        if (enemy.NavMeshAgent.remainingDistance < 0.2f && enemy.NavMeshAgent.remainingDistance >= 0f)
+        if (enemy.Path == null || enemy.Path.waypoints.Count == 0)
         {
-            if (waitTimer > 3)
-            {
-                waypointIndex = (waypointIndex + 1) % enemy.Path.waypoints.Count;
-                enemy.NavMeshAgent.SetDestination(enemy.Path.waypoints[waypointIndex].position);
-                waitTimer = 0;
-            }
+            Debug.LogError($"{enemy.name}: No valid patrol path found!");
+            return false;
         }
+        return true;
+    }
+
+    private void HandlePatrolCycle()
+    {
+        if (!HasReachedWaypoint()) return;
+
+        waitTimer += Time.deltaTime;
+        if (waitTimer >= WAIT_TIME)
+        {
+            SetNextWaypoint();
+            waitTimer = 0;
+        }
+    }
+
+    private bool HasReachedWaypoint()
+    {
+        return enemy.NavMeshAgent.remainingDistance < ARRIVAL_DISTANCE;
+    }
+
+    private void SetNextWaypoint()
+    {
+        currentWaypointIndex = (currentWaypointIndex + 1) % enemy.Path.waypoints.Count;
+        Vector3 nextWaypoint = enemy.Path.waypoints[currentWaypointIndex].position;
+        enemy.NavMeshAgent.SetDestination(nextWaypoint);
     }
 }

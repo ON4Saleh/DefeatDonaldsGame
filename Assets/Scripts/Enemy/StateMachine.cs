@@ -3,13 +3,27 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
     public BasicState activeState;
+    private Enemy enemy;
 
-    void Update()
+    // ????? property ?????? ??? ??? ?????? ???????
+    public string CurrentStateName => activeState?.GetType().Name;
+
+    private void Start()
     {
-        if (activeState != null)
+        enemy = GetComponent<Enemy>();
+        if (enemy == null)
         {
-            activeState.PerformState();
+            Debug.LogError($"{gameObject.name}: Enemy component not found!");
+            enabled = false;
+            return;
         }
+
+        Initialize();
+    }
+
+    private void Update()
+    {
+        activeState?.PerformState();
     }
 
     public void Initialize()
@@ -19,14 +33,13 @@ public class StateMachine : MonoBehaviour
 
     public void ChangeState(BasicState newState)
     {
+        if (newState == null) return;
+
         activeState?.ExitState();
-
         activeState = newState;
+        activeState.Initialize(enemy, this);
+        activeState.EnterState();
 
-        if (activeState != null)
-        {
-            activeState.Initialize(GetComponent<Enemy>(), this);
-            activeState.EnterState();
-        }
+        Debug.Log($"{gameObject.name} changing to {newState.GetType().Name}");
     }
 }
