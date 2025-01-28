@@ -13,7 +13,7 @@ public class PlayerLook : MonoBehaviour
         float mouseY = input.y;
 
         float smoothMouseX = Mathf.Lerp(0, mouseX, 0.1f);
-        float smoothMouseY = Mathf.Lerp(0, mouseY, 0.1f); 
+        float smoothMouseY = Mathf.Lerp(0, mouseY, 0.1f);
 
         xRotation -= (smoothMouseY * Time.deltaTime) * ySenetivity;
         xRotation = Mathf.Clamp(xRotation, -80f, 80f);

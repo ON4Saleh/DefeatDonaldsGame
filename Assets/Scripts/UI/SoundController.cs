@@ -20,6 +20,11 @@ public class SoundController : MonoBehaviour
         AudioListener.volume = VolSlider.value;
         save();
     }
+    public void changesfx()
+    {
+        SoundManager.Instance.ToggleSFX();
+        save();
+    }
     public void load()
     {
         VolSlider.value = PlayerPrefs.GetFloat("musicVolume");

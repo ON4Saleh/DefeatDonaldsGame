@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SoundManager : MonoBehaviour
 {
@@ -54,5 +55,21 @@ public class SoundManager : MonoBehaviour
         {
             Debug.Log("SFX not found: " + name);
         }
+    }
+    public void ToggleSFX()
+    {
+        sfxSource.mute = !sfxSource.mute;
+    }
+    public void ToggleMusic()
+    {
+        musicSource.mute = !sfxSource.mute;
+    }
+    public void musicVolume(float Volume)
+    {
+        musicSource.volume = Volume;
+    }
+    public void sfxVolume(float Volume)
+    {
+        sfxSource.volume = Volume;
     }
 }

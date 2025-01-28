@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/UI/MainMenu.unity
+    guid: 5bd34d4161d5bfc4bbe0e5fef97fb6db
+  - enabled: 1
     path: Assets/Scenes/Map/MergeMap.unity
     guid: f4aa7b443e34949468d96b215dce3532
+  - enabled: 1
+    path: Assets/Scenes/UI/PlayerControls.unity
+    guid: 239f3d1c94bcfb44d8aacaa0500df793
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,16 +1,14 @@
 {
     "banditlist": [
         {
-             "name": "Duck",
-             "damage": 30,
-             "maxWaterLevel": 1000,
-             "maxMoneyLevel": 0
+            "name": "Duck",
+            "damage": 30,
+            "health": 1000
         },
         {
-             "name": "Donald",
-             "damage": 80,
-             "maxMoneyLevel": 1000,
-             "maxWaterLevel": 0
+            "name": "Donald",
+            "damage": 80,
+            "health": 2000
         }
     ]
 }

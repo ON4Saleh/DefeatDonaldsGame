@@ -7,21 +7,26 @@ public class Bullet : MonoBehaviour
     [SerializeField] private GameObject impactEffect;
     [SerializeField] private GameObject bulletHolePrefab;
     [SerializeField] private float bulletLifetime = 3f;
+    public float bulletSpeed;
 
-    [Header("Bullet health era")]
+    [Header("Bullet Health Era")]
     public BulletType bulletType;
-    public float damage;
+    public int damage = 20; 
+    public bool damageEnemy, damagePlayer;
     private void OnCollisionEnter(Collision collision)
     {
-
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && bulletType == BulletType.EnemyBullet)
         {
-            HandleBulletHit(collision.gameObject, "Player");
+            Debug.Log("Bullet hit player: " + collision.gameObject.name);
+            PlayerHealth.instance.DamagePlayer(50); 
         }
-        else if (collision.gameObject.CompareTag("Enemy"))
+        else if (collision.gameObject.CompareTag("Enemy") && bulletType == BulletType.PlayerBullet)
         {
-            HandleBulletHit(collision.gameObject, "Enemy");
-            Debug.Log("hit enemy" + collision.gameObject.name + "!");
+            EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.DamageEnemey(20); 
+            }
         }
         if (impactEffect != null)
         {
@@ -38,42 +43,6 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void HandleBulletHit(GameObject target, string targetTag)
-    {
-        if (targetTag == "Player")
-        {
-            HandlePlayerBulletHit(target);
-        }
-        else if (targetTag == "Enemy")
-        {
-            HandleEnemyBulletHit(target);
-        }
-    }
-    private void HandlePlayerBulletHit(GameObject enemy)
-    {
-        Enemy enemyStats = enemy.GetComponent<Enemy>();
-        if (enemyStats != null && enemy.name == "Duck")
-        {
-           // enemyStats.enemyWaterLevel -= 30;
-           // Debug.Log("Duck water level: " + enemyStats.enemyWaterLevel); 
-            PlayerController playerController = GameManager.Instance.playerStats;
-          
-
-            //if (enemyStats.enemyWaterLevel <= 0)
-            //{
-            //    Destroy(enemy);
-            //    //playerController.waterLevel += 1000;
-            //    Debug.Log("Duck destroyed!");
-            //}
-        }
-    }
-    private void HandleEnemyBulletHit(GameObject player)
-    {
-        PlayerController playerController = player.GetComponent<PlayerController>();
-        if (playerController != null)
-        {
-        }
-    }
     public enum BulletType
     {
         PlayerBullet,

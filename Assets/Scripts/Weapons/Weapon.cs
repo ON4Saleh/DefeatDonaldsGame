@@ -26,6 +26,7 @@ public class Weapon : MonoBehaviour
 
     internal Animator animator;
 
+    private TextsUI textsUI;
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;
     public bool weaponisActive;
@@ -43,6 +44,7 @@ public class Weapon : MonoBehaviour
         currentBulletCount = maxBulletCapacity;
         enemy = GetComponentInParent<Enemy>();
         playerCamera = Camera.main;
+        textsUI = GetComponent<TextsUI>();
     }
 
     private void Update()
@@ -155,6 +157,10 @@ public class Weapon : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
         bullet.transform.forward = shootingDirection;
 
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.damage = 20;
+        Debug.Log("Bullet fired with damage: " + bulletScript.damage);
+
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
 
@@ -176,19 +182,20 @@ public class Weapon : MonoBehaviour
         }
 
         Vector3 direction = targetPoint - bulletSpawnPoint.position;
+        direction.Normalize();
+
         float spreadX = Random.Range(-spreadIntensity, spreadIntensity);
         float spreadY = Random.Range(-spreadIntensity, spreadIntensity);
 
-        return direction + new Vector3(spreadX, spreadY, 0);
+        return Quaternion.Euler(spreadY, spreadX, 0) * direction;
     }
     private Vector3 EnemyCalculateDirectionAndSpread()
     {
-        Vector3 direction = playerTransform.position - bulletSpawnPoint.position;
-
+        Vector3 direction = (playerTransform.position - bulletSpawnPoint.position).normalized; 
         float spreadX = Random.Range(-spreadIntensity, spreadIntensity);
         float spreadY = Random.Range(-spreadIntensity, spreadIntensity);
 
-        return direction + new Vector3(spreadX, spreadY, 0);
+        return Quaternion.Euler(spreadY, spreadX, 0) * direction; 
     }
 
     private void EnemyFireBullet()
