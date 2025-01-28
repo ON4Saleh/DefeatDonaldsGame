@@ -10,14 +10,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravity = -9.8f;
     [SerializeField] Vector3 playerVelocity;
     [SerializeField] float jumpHeight = 2f;
-    [Header("Player Stats")]
-    public int score = 0;
-    public float waterLevel = 1000f;
-    public float moneyLevel = 10000f;
+   
     [Header("Player Respawn")]
     [SerializeField] int respawnAttempts = 2;
     [SerializeField] Vector3 initialPosition;
 
+    private PlayerHealth plyrhealth;
     private Enemy enemy;
     private Bullet bullet;
     private void Start()
@@ -26,27 +24,6 @@ public class PlayerController : MonoBehaviour
         initialPosition = transform.position; 
     }
 
-    private void Update()
-    {
-        if (waterLevel <= 0)
-        {
-            RespawnPlayer();
-        }
-    }
-    public void RespawnPlayer()
-    {
-        if (respawnAttempts > 0)
-        {
-            respawnAttempts--;
-            transform.position = initialPosition;
-            score -= 50;
-            waterLevel = 1000f; 
-        }
-        else
-        {
-            GameOver();
-        }
-    }
     private void GameOver()
     {
         Debug.Log("Game Over");
@@ -55,6 +32,31 @@ public class PlayerController : MonoBehaviour
     private void InitializeComponents()
     {
         characterController = GetComponent<CharacterController>();
+        plyrhealth = GetComponent<PlayerHealth>();
+    }
+    private void Update()
+    {
+        // Handle movement and other updates
+        MovePlayer(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        CheckRespawn(); // Check for respawn conditions
+    }
+    private void CheckRespawn()
+    {
+        if (plyrhealth.playerWaterLevel <= 0)
+        {
+            Respawn(new Vector3(0, 0, 0)); // Respawn at water point
+        }
+        else if (plyrhealth.playerMoneyLevel <= 0)
+        {
+            Respawn(new Vector3(-29.7f, 0, 8.59f)); // Respawn at money point
+        }
+    }
+
+    private void Respawn(Vector3 respawnPoint)
+    {
+        transform.position = respawnPoint; // Set player position to respawn point
+        plyrhealth.ResetHealth(); // Reset health and score
+        Debug.Log("Player respawned at: " + respawnPoint);
     }
 
     public void MovePlayer(Vector2 input)
@@ -67,6 +69,7 @@ public class PlayerController : MonoBehaviour
 
         ApplyGravity();
     }
+
     public void Jump()
     {
         if (isGrounded)
@@ -110,15 +113,15 @@ public class PlayerController : MonoBehaviour
         {
             if (enemy.name == "Duck")
             {
-                enemyStats.enemyWaterLevel -= 30;
-                waterLevel -= 10;
-                score += 20;
+               /// enemyStats.enemyWaterLevel -= 30;
+                //waterLevel -= 10;
+                //score += 20;
 
-                if (enemyStats.enemyWaterLevel <= 0)
-                {
-                    Destroy(enemy);
-                    waterLevel += 1000;
-                }
+                //if (enemyStats.enemyWaterLevel <= 0)
+                //{
+                //    Destroy(enemy);
+                //    //waterLevel += 1000;
+                //}
             }
         }
     }
@@ -128,13 +131,10 @@ public class PlayerController : MonoBehaviour
         PlayerController playerController = player.GetComponent<PlayerController>();
         if (playerController != null)
         {
-            waterLevel -= enemy.enemyDamage;
-            score -= 50;
+            //waterLevel -= enemy.enemyDamage;
+            //score -= 50;
 
-            if (waterLevel <= 0)
-            {
-                RespawnPlayer();
-            }
+            
         }
     }
 }

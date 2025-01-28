@@ -10,9 +10,9 @@ public class PickUp : MonoBehaviour
 
     [Header("Drop Settings")]
     [SerializeField] private float dropForce = 2f;
-    private GameObject currentWeaponObject; 
+    private GameObject currentWeaponObject;
 
-    private TextsUI textsUI; 
+    private TextsUI textsUI;
     private Camera mainCamera;
     private readonly Vector3 screenCenter = new Vector3(0.5f, 0.5f, 0f);
 
@@ -24,7 +24,7 @@ public class PickUp : MonoBehaviour
     private void InitializeComponents()
     {
         mainCamera = Camera.main;
-        textsUI = GetComponent<TextsUI>(); 
+        textsUI = GetComponent<TextsUI>();
         if (mainCamera == null)
         {
             Debug.LogError($"{gameObject.name}: Main camera not found! PickUp system will be disabled.");
@@ -35,7 +35,7 @@ public class PickUp : MonoBehaviour
     private void Update()
     {
         HandleHover();
-        HandlePickup(); 
+        HandlePickup();
         HandleDrop();
     }
 
@@ -50,7 +50,7 @@ public class PickUp : MonoBehaviour
         else
         {
             textsUI.UpdateText(string.Empty);
-            currentWeaponObject = null; 
+            currentWeaponObject = null;
         }
     }
 

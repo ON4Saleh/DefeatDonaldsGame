@@ -23,7 +23,7 @@ public class WeaponManager : MonoBehaviour
     public void Start()
     {
         activeweaponSlot = weaponSlots[0];
-        SwitchActiveSlot(0); 
+        SwitchActiveSlot(0);
     }
 
     private void Update()
@@ -42,11 +42,11 @@ public class WeaponManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwitchActiveSlot(0); 
+            SwitchActiveSlot(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SwitchActiveSlot(1);  
+            SwitchActiveSlot(1);
         }
     }
 
@@ -63,7 +63,7 @@ public class WeaponManager : MonoBehaviour
         Weapon weapon = pickedWeapon.GetComponent<Weapon>();
         pickedWeapon.transform.localPosition = new Vector3(weapon.spawnPosition.x, weapon.spawnPosition.y, weapon.spawnPosition.z);
         pickedWeapon.transform.localRotation = Quaternion.Euler(weapon.spawnRotation.x, weapon.spawnRotation.y, weapon.spawnRotation.z);
-        weapon.weaponisActive = true;  
+        weapon.weaponisActive = true;
         weapon.animator.enabled = true;
     }
 

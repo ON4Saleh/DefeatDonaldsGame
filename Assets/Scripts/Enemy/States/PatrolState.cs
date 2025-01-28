@@ -34,7 +34,7 @@ public class PatrolState : BasicState
 
     private bool ValidatePatrolPath()
     {
-        if (enemy.Path == null || enemy.Path.waypoints.Count == 0)
+        if (enemy.WayPath == null || enemy.WayPath.waypoints.Count == 0)
         {
             Debug.LogError($"{enemy.name}: No valid patrol path found!");
             return false;
@@ -60,14 +60,14 @@ public class PatrolState : BasicState
     }
     private void SetNextWaypoint()
     {
-        if (enemy.Path == null || enemy.Path.waypoints == null || enemy.Path.waypoints.Count == 0)
+        if (enemy.WayPath == null || enemy.WayPath.waypoints == null || enemy.WayPath.waypoints.Count == 0)
         {
             Debug.LogError($"{enemy.name}: Invalid Path or waypoints!");
             return;
         }
 
-        currentWaypointIndex = (currentWaypointIndex + 1) % enemy.Path.waypoints.Count;
-        Vector3 nextWaypoint = enemy.Path.waypoints[currentWaypointIndex].position;
+        currentWaypointIndex = (currentWaypointIndex + 1) % enemy.WayPath.waypoints.Count;
+        Vector3 nextWaypoint = enemy.WayPath.waypoints[currentWaypointIndex].position;
         enemy.NavMeshAgent.SetDestination(nextWaypoint);
     }
 

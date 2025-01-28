@@ -1,6 +1,6 @@
 using UnityEngine.AI;
 using UnityEngine;
-
+using System.IO;
 public class Enemy : MonoBehaviour
 {
     private StateMachine stateMachine;
@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     private Animator animator;
     private Weapon Weapon;
     public NavMeshAgent NavMeshAgent => navMeshAgent;
-    public WaypointPath Path => path;
+    public WaypointPath WayPath => path;
     public GameObject player;
     public float sightDistance = 20f;
     public float fieldOfView = 85f;
@@ -21,12 +21,8 @@ public class Enemy : MonoBehaviour
     public Vector3 LastKnownPos { get => lastKnownPosition; set => lastKnownPosition = value; }
     private int currentWaypointIndex = 0;
 
-    public string enemyName;
-    public float enemyWaterLevel = 1000;
-    public float enemyMaxWaterLevel = 1000;
-    public float enemyDamage;
-    public float enemyMoneyLevel = 10000;
-    public float enemyMaxMoneyLevel = 10000;
+    [SerializeField] GameObject door; 
+    private bool doorOpen;
 
     private void Start()
     {
@@ -91,7 +87,14 @@ public class Enemy : MonoBehaviour
         return false;
     }
 
-
+    private void OpenDoor()
+    {
+        Animator doorAnimator = door.GetComponent<Animator>();
+        if (doorAnimator != null)
+        {
+            doorAnimator.SetBool("isOpen", true);
+        }
+    }
     private void HandleMovement()
     {
         if (currentState == "AttackState" && !animator.GetBool("isShooting"))
@@ -122,7 +125,6 @@ public class Enemy : MonoBehaviour
     
         }
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -130,30 +132,31 @@ public class Enemy : MonoBehaviour
             PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
             if (playerController != null)
             {
-                if (enemyName == "Duck")
-                {
-                    playerController.waterLevel -= 10;
-                    enemyWaterLevel -= 30;
-                    playerController.score += 20;
+                //if (enemyName == "Duck")
+                //{
+                //    playerController.waterLevel -= 10;
+                //    enemyWaterLevel -= 30;
+                //    playerController.score += 20;
 
-                    if (enemyWaterLevel <= 0)
-                    {
-                        Destroy(gameObject);
-                        playerController.waterLevel += 1000;
-                    }
-                }
-                else if (enemyName == "Donald")
-                {
-                    playerController.moneyLevel -= enemyDamage;
-                    enemyMoneyLevel -= 30;
-                    playerController.score += 20;
+                //    if (enemyWaterLevel <= 0)
+                //    {
+                //        Destroy(gameObject);
+                //        OpenDoor();
+                //        playerController.waterLevel += 1000;
+                //    }
+                //}
+                //else if (enemyName == "Donald")
+                //{
+                //    playerController.moneyLevel -= enemyDamage;
+                //    enemyMoneyLevel -= 30;
+                //    playerController.score += 20;
 
-                    if (enemyMoneyLevel <= 0)
-                    {
-                        Destroy(gameObject);
-                        playerController.moneyLevel += 10000;
-                    }
-                }
+                //    if (enemyMoneyLevel <= 0)
+                //    {
+                //        Destroy(gameObject);
+                //        playerController.moneyLevel += 10000;
+                //    }
+                //}
             }
         }
     }

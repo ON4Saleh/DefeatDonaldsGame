@@ -26,7 +26,6 @@ public class Weapon : MonoBehaviour
 
     internal Animator animator;
 
-    private TextsUI textsUI;
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;
     public bool weaponisActive;
@@ -44,7 +43,6 @@ public class Weapon : MonoBehaviour
         currentBulletCount = maxBulletCapacity;
         enemy = GetComponentInParent<Enemy>();
         playerCamera = Camera.main;
-        textsUI = GetComponent<TextsUI>();
     }
 
     private void Update()
@@ -148,10 +146,10 @@ public class Weapon : MonoBehaviour
     {
         if (currentBulletCount <= 0)
         {
-            return; 
+            return;
         }
 
-        currentBulletCount--; 
+        currentBulletCount--;
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
@@ -224,8 +222,8 @@ public class Weapon : MonoBehaviour
         {
             for (int i = 0; i < bulletsPerBurst; i++)
             {
-                EnemyFireBullet();  
-                yield return new WaitForSeconds(shootingDelay);  
+                EnemyFireBullet();
+                yield return new WaitForSeconds(shootingDelay);
             }
 
             yield return new WaitForSeconds(burstDelay);
