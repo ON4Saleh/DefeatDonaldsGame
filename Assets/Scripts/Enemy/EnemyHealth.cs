@@ -3,121 +3,79 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    private int duckwaterlevel;
-    private int donaldMoneyLevel;
-    private Bandits bandit; // ???? ?????? ?? ???? ??? JSON
-    public Image waterlevelimg; // ??? ??????? ?? Inspector
-    public Image moneylevelimg; // ??? ??????? ?? Inspector
+    private PlayerHealth playerHealth;
+    private Bandits bandit;
+    private PlayerController playercontroller;
 
-    void Start()
+    [Header("Enemy UI")]
+    public Image healthimg;
+    public int currentHealth;
+
+    private void Start()
     {
-        JsonRead jsonRead = FindObjectOfType<JsonRead>(); // ???? ??? ???? ??? JsonRead ?? ??????
-        if (jsonRead == null)
+        playerHealth = FindFirstObjectByType<PlayerHealth>();  // Find the PlayerHealth component
+        if (playerHealth == null)
         {
-            Debug.LogError("JsonRead component not found!");
-            return;
+            Debug.LogError("PlayerHealth component not found in the scene!");
         }
 
-        // ????? ??? bandit ????? ??? ??? ??????
+        playercontroller = FindFirstObjectByType<PlayerController>();  // Find the PlayerController component
+        if (playercontroller == null)
+        {
+            Debug.LogError("PlayerController component not found in the scene!");
+        }
+
+        bandit = GetComponent<Bandits>();  // Get the Bandits component on the same GameObject
+        if (bandit != null)
+        {
+            currentHealth = bandit.health;
+        }
+        else
+        {
+            Debug.LogError("Bandits component not found on this GameObject!");
+        }
+
+        UpdateHealthUI();
+    }
+
+    public void TakeDamage()
+    {
+        currentHealth -= playerHealth.playerDamage;
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            Destroy(gameObject);  // Destroy the enemy when health reaches 0
+        }
+        UpdateHealthUI();
+    }
+
+    public void ApplyDamage()
+    {
         if (gameObject.name == "Duck")
         {
-            bandit = jsonRead.banditlist.banditlist[0]; // ????? ????? "Duck"
-            duckwaterlevel = bandit.maxWaterLevel;
-            donaldMoneyLevel = 0; // ????? ????? ????? ?? Donald ??? 0
+            playerHealth.playerWaterLevel -= bandit.damage;  // Decrease player's water level by bandit damage
+            if (playerHealth.playerWaterLevel <= 0)
+            {
+                playercontroller.CheckRespawn();
+                playerHealth.playerWaterLevel += 1000;  // Reward player with water level
+                playerHealth.UpdateScore(200);  // Increase score for killing Duck
+            }
         }
         else if (gameObject.name == "Donald")
         {
-            bandit = jsonRead.banditlist.banditlist[1]; // ????? ????? "Donald"
-            donaldMoneyLevel = bandit.maxMoneyLevel;
-            duckwaterlevel = 0; // ????? ????? ?????? ?? Duck ??? 0
-        }
-    }
-
-    void Update()
-    {
-        // ?????? ?? ?? ????? ????? ?? ??? ?? 0
-        if (bandit.name == "Duck")
-        {
-            duckwaterlevel = Mathf.Clamp(duckwaterlevel, 0, bandit.maxWaterLevel);
-        }
-        else if (bandit.name == "Donald")
-        {
-            donaldMoneyLevel = Mathf.Clamp(donaldMoneyLevel, 0, bandit.maxMoneyLevel);
-        }
-
-        UpdateHealthUI(); // ????? ????? ????????
-
-        // ?????? ??????? ???? ????? ???????? ?????
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            // Check if the current GameObject is Duck or Donald
-            if (bandit.name == "Duck")
+            playerHealth.playerMoneyLevel -= bandit.damage;  // Decrease player's money level by bandit damage
+            if (playerHealth.playerMoneyLevel <= 0)
             {
-                takeDamage(Random.Range(5, 10));
-            }
-            else if (bandit.name == "Donald")
-            {
-                takeDamage(Random.Range(5, 10));
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            // Check if the current GameObject is Duck or Donald
-            if (bandit.name == "Duck")
-            {
-                RestoreHealth(Random.Range(5, 10));
-            }
-            else if (bandit.name == "Donald")
-            {
-                RestoreHealth(Random.Range(5, 10));
+                playercontroller.CheckRespawn();
+                playerHealth.playerMoneyLevel += 1000;  // Reward player with money level
+                playerHealth.UpdateScore(200);  // Increase score for killing Donald
             }
         }
     }
 
-    public void ResetHealth()
+    private void UpdateHealthUI()
     {
-        duckwaterlevel = bandit.maxWaterLevel;
-        donaldMoneyLevel = bandit.maxMoneyLevel;
-    }
-    public void UpdateHealthUI()
-    {
-        // Log the current health levels for debugging
-        Debug.Log("WaterLevel: " + duckwaterlevel);
-        Debug.Log("MoneyLevel: " + donaldMoneyLevel);
-
-        // Update the UI images based on current health levels
-        float Wfraction = (float)duckwaterlevel / bandit.maxWaterLevel;
-        waterlevelimg.fillAmount = Wfraction;
-
-        float Mfraction = (float)donaldMoneyLevel / bandit.maxMoneyLevel;
-        moneylevelimg.fillAmount = Mfraction;
-
-        // Additional logging to confirm UI updates
-        Debug.Log("WaterLevel UI Fill Amount: " + waterlevelimg.fillAmount);
-        Debug.Log("MoneyLevel UI Fill Amount: " + moneylevelimg.fillAmount);
-    }
-
-    public void takeDamage(int damage)
-    {
-        if (bandit.name == "Duck")
-        {
-            duckwaterlevel -= damage;
-        }
-        if (bandit.name == "Donald")
-        {
-            donaldMoneyLevel -= damage;
-        }
-    }
-
-    public void RestoreHealth(int healAmount)
-    {
-        if (bandit.name == "Duck")
-        {
-            duckwaterlevel = Mathf.Clamp(duckwaterlevel + healAmount, 0, bandit.maxWaterLevel);
-        }
-        if (bandit.name == "Donald")
-        {
-            donaldMoneyLevel = Mathf.Clamp(donaldMoneyLevel + healAmount, 0, bandit.maxMoneyLevel);
-        }
+        float healthFraction = (float)currentHealth / Mathf.Max(bandit.health, 1f);  // Prevent division by zero
+        healthimg.fillAmount = healthFraction;
     }
 }

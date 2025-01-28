@@ -1,6 +1,6 @@
 using UnityEngine.AI;
 using UnityEngine;
-using System.IO;
+
 public class Enemy : MonoBehaviour
 {
     private StateMachine stateMachine;
@@ -21,8 +21,9 @@ public class Enemy : MonoBehaviour
     public Vector3 LastKnownPos { get => lastKnownPosition; set => lastKnownPosition = value; }
     private int currentWaypointIndex = 0;
 
-    [SerializeField] GameObject door; 
-    private bool doorOpen;
+    [SerializeField] GameObject door;
+    private Bandits bandit;
+    private PlayerHealth playerHealth;
 
     private void Start()
     {
@@ -57,37 +58,23 @@ public class Enemy : MonoBehaviour
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
         }
     }
-
     public bool canSeePlayer()
     {
-        if (player != null)
-        {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
+        if (player == null) return false;
 
-            if (distance < sightDistance)
-            {
-                Vector3 targetDirection = player.transform.position - transform.position - Vector3.up * eyeHeight;
-                float angleToPlayer = Vector3.Angle(targetDirection, transform.forward);
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+        if (distance >= sightDistance) return false;
 
-                if (angleToPlayer >= -fieldOfView && angleToPlayer <= fieldOfView)
-                {
-                    Ray ray = new Ray(transform.position + (Vector3.up * eyeHeight), targetDirection);
-                    RaycastHit hitInfo;
+        Vector3 targetDirection = player.transform.position - transform.position - Vector3.up * eyeHeight;
+        float angleToPlayer = Vector3.Angle(targetDirection, transform.forward);
 
-                    if (Physics.Raycast(ray, out hitInfo, sightDistance))
-                    {
-                        if (hitInfo.transform.gameObject == player)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
+        if (angleToPlayer < -fieldOfView || angleToPlayer > fieldOfView) return false;
+
+        Ray ray = new Ray(transform.position + (Vector3.up * eyeHeight), targetDirection);
+        return Physics.Raycast(ray, out RaycastHit hitInfo, sightDistance) && hitInfo.transform.gameObject == player;
     }
 
-    private void OpenDoor()
+    public void OpenDoor()
     {
         Animator doorAnimator = door.GetComponent<Animator>();
         if (doorAnimator != null)
@@ -95,6 +82,7 @@ public class Enemy : MonoBehaviour
             doorAnimator.SetBool("isOpen", true);
         }
     }
+
     private void HandleMovement()
     {
         if (currentState == "AttackState" && !animator.GetBool("isShooting"))
@@ -105,58 +93,64 @@ public class Enemy : MonoBehaviour
                 navMeshAgent.speed = 1.5f;
                 Weapon.HandleShooting();
                 EnemyWeaponHolder.gameObject.SetActive(true);
-             
+
                 SoundManager.Instance.PlaySFX("Trump");
             }
-            StartCoroutine(Weapon.EnemyBurstFire()); 
+            StartCoroutine(Weapon.EnemyBurstFire());
         }
         else if (currentState != "AttackState" && animator.GetBool("isShooting"))
         {
             animator.SetBool("isShooting", false);
             EnemyWeaponHolder.gameObject.SetActive(false);
             navMeshAgent.speed = 3.5f;
-        
+
         }
 
         if (currentState != "AttackState")
         {
             navMeshAgent.SetDestination(path.waypoints[currentWaypointIndex].position);
             EnemyWeaponHolder.gameObject.SetActive(false);
-    
+
         }
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
-            if (playerController != null)
+            if (bandit.name == "Duck")
             {
-                //if (enemyName == "Duck")
-                //{
-                //    playerController.waterLevel -= 10;
-                //    enemyWaterLevel -= 30;
-                //    playerController.score += 20;
-
-                //    if (enemyWaterLevel <= 0)
-                //    {
-                //        Destroy(gameObject);
-                //        OpenDoor();
-                //        playerController.waterLevel += 1000;
-                //    }
-                //}
-                //else if (enemyName == "Donald")
-                //{
-                //    playerController.moneyLevel -= enemyDamage;
-                //    enemyMoneyLevel -= 30;
-                //    playerController.score += 20;
-
-                //    if (enemyMoneyLevel <= 0)
-                //    {
-                //        Destroy(gameObject);
-                //        playerController.moneyLevel += 10000;
-                //    }
-                //}
+                ApplyDamage(collision.gameObject, bandit.damage);
+            }
+            else if (bandit.name == "Donald")
+            {
+                ApplyDamage(collision.gameObject, bandit.damage);
+            }
+        }
+    }
+    private void ApplyDamage(GameObject target, float damage)
+    {
+        if (bandit.name == "Duck")
+        {
+            if (target.CompareTag("Player"))
+            {
+                PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.playerWaterLevel -= damage; // Damage to player
+                    Debug.Log("Player damaged. Current water level: " + playerHealth.playerWaterLevel);
+                }
+            }
+        }
+        else if (bandit.name == "Donald")
+        {
+            if (target.CompareTag("Player"))
+            {
+                PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    playerHealth.playerMoneyLevel -= damage; // Damage to player
+                }
             }
         }
     }

@@ -5,29 +5,32 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
-    [SerializeField] float bulletSpeed = 100f;
-    [SerializeField] float bulletLifetime = 3f;
+    [SerializeField] private float bulletSpeed = 100f;
+    [SerializeField] private float bulletLifetime = 3f;
 
-    [SerializeField] float shootingDelay = 0.2f;
-    [SerializeField] float burstDelay = 0.5f;
-    [SerializeField] int bulletsPerBurst = 3;
-    [SerializeField] float spreadIntensity = 0.1f;
+    [SerializeField] private float shootingDelay = 0.2f;
+    [SerializeField] private float burstDelay = 0.5f;
+    [SerializeField] private int bulletsPerBurst = 3;
+    [SerializeField] private float spreadIntensity = 0.1f;
 
-    [SerializeField] int maxBulletCapacity = 50;
-    [SerializeField] float reloadTime = 1f;
+    [SerializeField] private int maxBulletCapacity = 50;
+    [SerializeField] private float reloadTime = 1f;
 
-    [SerializeField] Camera playerCamera;
+    [SerializeField] private Camera playerCamera;
     private Enemy enemy;
-    private bool shootsound = false;
-    [SerializeField] int currentBulletCount;
-    [SerializeField] bool canShoot = true;
-    [SerializeField] bool isReloading = false;
+    private bool shootSound = false;
+    [SerializeField] private int currentBulletCount;
+    [SerializeField] private bool canShoot = true;
+    [SerializeField] private bool isReloading = false;
     [SerializeField] private Transform playerTransform;
-
+    private Bandits bandits;
     internal Animator animator;
 
+    private TextsUI textsUI;
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;
+    public bool weaponIsActive;
+    private PlayerHealth playerHealth;
     public bool weaponisActive;
     private enum ShootingMode
     {
@@ -43,11 +46,13 @@ public class Weapon : MonoBehaviour
         currentBulletCount = maxBulletCapacity;
         enemy = GetComponentInParent<Enemy>();
         playerCamera = Camera.main;
+        textsUI = GetComponent<TextsUI>();
+        bandits = enemy.GetComponent<Bandits>();
     }
 
     private void Update()
     {
-        if (weaponisActive)
+        if (weaponIsActive)
         {
             if (isReloading) return;
 
@@ -69,38 +74,39 @@ public class Weapon : MonoBehaviour
     public void HandleShooting()
     {
         if (!canShoot || currentBulletCount <= 0) return;
+
         if (gameObject.CompareTag("PlayerWeapon"))
         {
             if (currentShootingMode == ShootingMode.Single && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 StartCoroutine(SingleFire());
                 PlayShootAnimation(true);
-                shootsound = true;
+                shootSound = true;
                 SoundManager.Instance.PlaySFX("WaterGun");
             }
             else if (currentShootingMode == ShootingMode.Burst && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 StartCoroutine(BurstFire());
                 PlayShootAnimation(true);
-                shootsound = true;
+                shootSound = true;
                 SoundManager.Instance.PlaySFX("WaterGun");
             }
             else if (currentShootingMode == ShootingMode.Auto && Input.GetKey(KeyCode.Mouse0))
             {
                 StartCoroutine(AutoFire());
                 PlayShootAnimation(true);
-                shootsound = true;
+                shootSound = true;
                 SoundManager.Instance.PlaySFX("WaterGun");
             }
             else if (!Input.GetKey(KeyCode.Mouse0))
             {
                 PlayShootAnimation(false);
-                shootsound = false;
+                shootSound = false;
             }
         }
         else if (gameObject.CompareTag("EnemyWeapon"))
         {
-
+            // Implement enemy shooting logic here
         }
     }
 
@@ -144,10 +150,7 @@ public class Weapon : MonoBehaviour
 
     private void FireBullet()
     {
-        if (currentBulletCount <= 0)
-        {
-            return;
-        }
+        if (currentBulletCount <= 0) return;
 
         currentBulletCount--;
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
@@ -155,11 +158,15 @@ public class Weapon : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
         bullet.transform.forward = shootingDirection;
 
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.damage = playerHealth.playerDamage; // Set the bullet damage value (you can adjust this)
+
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
 
         StartCoroutine(DestroyBulletAfterDelay(bullet, bulletLifetime));
     }
+
     private Vector3 CalculateDirectionAndSpread()
     {
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -176,19 +183,21 @@ public class Weapon : MonoBehaviour
         }
 
         Vector3 direction = targetPoint - bulletSpawnPoint.position;
+        direction.Normalize();
+
         float spreadX = Random.Range(-spreadIntensity, spreadIntensity);
         float spreadY = Random.Range(-spreadIntensity, spreadIntensity);
 
-        return direction + new Vector3(spreadX, spreadY, 0);
+        return Quaternion.Euler(spreadY, spreadX, 0) * direction;
     }
+
     private Vector3 EnemyCalculateDirectionAndSpread()
     {
-        Vector3 direction = playerTransform.position - bulletSpawnPoint.position;
-
+        Vector3 direction = (playerTransform.position - bulletSpawnPoint.position).normalized; // Ensure direction is normalized
         float spreadX = Random.Range(-spreadIntensity, spreadIntensity);
         float spreadY = Random.Range(-spreadIntensity, spreadIntensity);
 
-        return direction + new Vector3(spreadX, spreadY, 0);
+        return Quaternion.Euler(spreadY, spreadX, 0) * direction; // Apply spread to the direction
     }
 
     private void EnemyFireBullet()
@@ -200,25 +209,23 @@ public class Weapon : MonoBehaviour
 
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
         bullet.transform.forward = shootingDirection;
+        Bullet bulletScript = bullet.GetComponent<Bullet>();  // Declare bulletScript here
+        if (bandits != null)
+        {
+            bulletScript.damage = bandits.damage;  // Set damage based on bandits
+        }
 
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
+
         Debug.Log("Bullet Fired");
         StartCoroutine(DestroyBulletAfterDelay(bullet, bulletLifetime));
-    }
-    private void OnDrawGizmos()
-    {
-        if (bulletSpawnPoint != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(bulletSpawnPoint.position, bulletSpawnPoint.position + bulletSpawnPoint.forward * 10f);
-        }
     }
 
     public IEnumerator EnemyBurstFire()
     {
         canShoot = false;
-        while (enemy.canSeePlayer())
+        while (enemy.canSeePlayer()) // Assuming this method checks if the enemy can see the player
         {
             for (int i = 0; i < bulletsPerBurst; i++)
             {

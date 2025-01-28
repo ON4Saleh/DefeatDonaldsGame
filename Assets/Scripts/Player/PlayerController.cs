@@ -10,53 +10,64 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravity = -9.8f;
     [SerializeField] Vector3 playerVelocity;
     [SerializeField] float jumpHeight = 2f;
-   
+
     [Header("Player Respawn")]
     [SerializeField] int respawnAttempts = 2;
-    [SerializeField] Vector3 initialPosition;
+    [SerializeField] public Vector3 initialPosition = new Vector3(0, 0, 0);
+    [SerializeField] public Vector3 moneyPosition = new Vector3(-16.9400005f, 0.579999983f, 7.42000008f); // Updated position
 
-    private PlayerHealth plyrhealth;
-    private Enemy enemy;
-    private Bullet bullet;
-    private void Start()
+    private PlayerHealth playerHealth;
+
+    void Start()
     {
         InitializeComponents();
-        initialPosition = transform.position; 
-    }
-
-    private void GameOver()
-    {
-        Debug.Log("Game Over");
     }
 
     private void InitializeComponents()
     {
         characterController = GetComponent<CharacterController>();
-        plyrhealth = GetComponent<PlayerHealth>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
-    private void Update()
+
+    void Update()
     {
         // Handle movement and other updates
         MovePlayer(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         CheckRespawn(); // Check for respawn conditions
     }
-    private void CheckRespawn()
+
+    public void CheckRespawn()
     {
-        if (plyrhealth.playerWaterLevel <= 0)
+        if (playerHealth.playerWaterLevel <= 0)
         {
-            Respawn(new Vector3(0, 0, 0)); // Respawn at water point
+            Respawn(initialPosition); // Respawn at water point
         }
-        else if (plyrhealth.playerMoneyLevel <= 0)
+        else if (playerHealth.playerMoneyLevel <= 0)
         {
-            Respawn(new Vector3(-29.7f, 0, 8.59f)); // Respawn at money point
+            Respawn(moneyPosition); // Respawn at money point
         }
     }
 
     private void Respawn(Vector3 respawnPoint)
     {
-        transform.position = respawnPoint; // Set player position to respawn point
-        plyrhealth.ResetHealth(); // Reset health and score
-        Debug.Log("Player respawned at: " + respawnPoint);
+        if (respawnAttempts > 0)
+        {
+            transform.position = respawnPoint; // Set player position to respawn point
+            playerHealth.ResetHealth(respawnPoint); // Reset health and score
+            playerHealth.playerScore += 200;
+            respawnAttempts--;
+        }
+        else
+        {
+            GameOver(); // Game over if no respawn attempts left
+        }
+    }
+
+
+    public void GameOver()
+    {
+        Debug.Log("Game Over");
+        // Display final score and stats if needed
     }
 
     public void MovePlayer(Vector2 input)
@@ -69,7 +80,6 @@ public class PlayerController : MonoBehaviour
 
         ApplyGravity();
     }
-
     public void Jump()
     {
         if (isGrounded)
@@ -78,7 +88,6 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-
     private void UpdateGroundStatus()
     {
         isGrounded = characterController.isGrounded;
@@ -93,48 +102,5 @@ public class PlayerController : MonoBehaviour
     {
         playerVelocity.y += gravity * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
-    }
-    public void HandleBulletHit(GameObject target, string targetTag)
-    {
-        if (bullet.bulletType == BulletType.PlayerBullet && targetTag == "Enemy")
-        {
-            HandlePlayerBulletHit(target);
-        }
-        else if (bullet.bulletType == BulletType.EnemyBullet && targetTag == "Player")
-        {
-            HandleEnemyBulletHit(target);
-        }
-    }
-
-    private void HandlePlayerBulletHit(GameObject enemy)
-    {
-        Enemy enemyStats = enemy.GetComponent<Enemy>();
-        if (enemyStats != null)
-        {
-            if (enemy.name == "Duck")
-            {
-               /// enemyStats.enemyWaterLevel -= 30;
-                //waterLevel -= 10;
-                //score += 20;
-
-                //if (enemyStats.enemyWaterLevel <= 0)
-                //{
-                //    Destroy(enemy);
-                //    //waterLevel += 1000;
-                //}
-            }
-        }
-    }
-
-    private void HandleEnemyBulletHit(GameObject player)
-    {
-        PlayerController playerController = player.GetComponent<PlayerController>();
-        if (playerController != null)
-        {
-            //waterLevel -= enemy.enemyDamage;
-            //score -= 50;
-
-            
-        }
     }
 }

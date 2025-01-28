@@ -1,94 +1,93 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class PlayerHealth : MonoBehaviour
 {
+    [Header("Player Stats")]
     public float playerWaterLevel;
     public float playerMoneyLevel;
-    public float maxwaterlevel = 1000;
-    public float maxmoneyLevel = 1000; 
-    public Image waterlevelimg;
-    public Image moneylevelimg;
-    public int playerScore= 0;
-    public TextMeshProUGUI scoreText;
+    public float maxWaterLevel = 10000;
+    public float maxMoneyLevel = 10000; // Updated max money level
+    public int respawnAttempts = 2;
+    public int playerScore = 0;
     private bool isRespawning = false;
-   void Start()
+    public int playerDamage = 50;
+
+    [Header("Player UI")]
+    public Image waterLevelImg;
+    public Image moneyLevelImg;
+    public TextMeshProUGUI scoreText;
+    private Bandits bandit;
+    private PlayerController playerController;
+    public static PlayerHealth instance;
+    private void Awake()
     {
-        playerScore = 0;
-        playerMoneyLevel = maxmoneyLevel;
-        playerWaterLevel = maxwaterlevel;
+        instance = this;
+    }
+    void Start()
+    {
+        playerMoneyLevel = maxMoneyLevel;
+        playerWaterLevel = maxWaterLevel;
         scoreText.text = "Score " + playerScore;
-    }
-
-    void Update()
-    {
-        if (!isRespawning) // Only update if not respawning
-        {
-            playerWaterLevel = Mathf.Clamp(playerWaterLevel, 0, maxwaterlevel);
-            playerMoneyLevel = Mathf.Clamp(playerMoneyLevel, 0, maxmoneyLevel);
-            UpdateHealthUI();
-
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                takeDamage(Random.Range(5, 10));
-            }
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                RestoreHealth(Random.Range(5, 10));
-            }
-        }
-    }
-    public void ResetHealth()
-    {
-        playerWaterLevel = maxwaterlevel;
-        playerMoneyLevel = maxmoneyLevel;
-        playerScore -= 50; // Deduct score on respawn
         UpdateScoreUI();
     }
+
+    public void ResetHealth(Vector3 respawnPosition)
+    {
+        playerWaterLevel = maxWaterLevel;
+        playerMoneyLevel = maxMoneyLevel;
+        playerScore -= 50; // Deduct score on respawn
+        transform.position = respawnPosition; // Move player to respawn position
+        UpdateScoreUI();
+    }
+
+
     public void UpdateHealthUI()
     {
-        Debug.Log("WaterLevel: " + playerWaterLevel);
-        Debug.Log("MoneyLevel: " + playerMoneyLevel);
-
-        float fillW = waterlevelimg.fillAmount;
-        float Wfraction = playerWaterLevel / maxwaterlevel;
-        waterlevelimg.fillAmount = Wfraction; 
-
-        float fillM = moneylevelimg.fillAmount;
-        float Mfraction = playerMoneyLevel / maxmoneyLevel;
-        moneylevelimg.fillAmount = Mfraction;
+        waterLevelImg.fillAmount = playerWaterLevel / maxWaterLevel;
+        moneyLevelImg.fillAmount = playerMoneyLevel / maxMoneyLevel;
     }
-    public void takeDamage(float damage)
+
+   
+    public void TakeDamage(Bandits bandit)
     {
-        playerMoneyLevel -= damage;
-       // playerWaterLevel -= damage;
-        UpdateScore(-300);
+        if (bandit.name == "Duck")
+        {
+            playerWaterLevel -= bandit.damage;
+            playerController.CheckRespawn();
+        }
+        else if (bandit.name == "Donald")
+        {
+            playerMoneyLevel -= bandit.damage;
+            playerController.CheckRespawn();
+        }
+        UpdateHealthUI();
+    }
+    public void ApplyDamage()
+    {
+        bandit.health -= playerDamage;
+        RestoreHealth(10);
     }
     public void RestoreHealth(float healAmount)
     {
         playerWaterLevel += healAmount;
         playerMoneyLevel += healAmount;
-        UpdateScore(5);
+        UpdateScore(200);
     }
+
     public void UpdateScore(int scoreChange)
     {
         playerScore += scoreChange;
-        //if (playerScore < 0)
-        //{
-        //    playerScore = 0;
-        //}
-        UpdateScoreUI(); 
+        if (playerScore < 0)
+        {
+            playerScore = 0;
+        }
+        UpdateScoreUI();
     }
+
     private void UpdateScoreUI()
     {
-        if (scoreText != null)
-        {
-            scoreText.text = "Score " + playerScore;
-            Debug.Log("Score updated: " + playerScore); 
-        }
-        else
-        {
-            Debug.LogError("Score Text is not assigned!"); 
-        }
+        scoreText.text = "Score " + playerScore;
     }
 }
