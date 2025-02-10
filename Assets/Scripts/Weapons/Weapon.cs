@@ -152,18 +152,20 @@ public class Weapon : MonoBehaviour
         }
 
         currentBulletCount--;
-        Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
+        // Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
 
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-        bullet.transform.forward = shootingDirection;
-
+        //   GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+        //   bullet.transform.forward = shootingDirection;
+        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+        bullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.forward * bulletSpeed;
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript.damage = 20;
         Debug.Log("Bullet fired with damage: " + bulletScript.damage);
 
-        Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
-        bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
-
+      //  Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
+       // bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
+       // GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+       
         StartCoroutine(DestroyBulletAfterDelay(bullet, bulletLifetime));
     }
     private Vector3 CalculateDirectionAndSpread()
