@@ -20051,8 +20051,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b9d5f7464016e43a44620724ceb76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthimg: {fileID: 399646200}
-  currentHealth: 100
+  Duckhealthimg: {fileID: 0}
+  DonaldhealthImg: {fileID: 0}
+  DuckcurrentHealth: 0
+  DonaldcurrenrHealth: 0
   door: {fileID: 0}
 --- !u!1001 &1690317067
 PrefabInstance:
@@ -22537,8 +22539,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b9d5f7464016e43a44620724ceb76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthimg: {fileID: 0}
-  currentHealth: 100
+  Duckhealthimg: {fileID: 1343098331}
+  DonaldhealthImg: {fileID: 399646200}
+  DuckcurrentHealth: 0
+  DonaldcurrenrHealth: 0
   door: {fileID: 0}
 --- !u!1001 &1846275691
 PrefabInstance:
