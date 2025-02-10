@@ -18,14 +18,13 @@ public class EnemyHealth : MonoBehaviour
 
     void Start()
     {
-        jsonRead = FindObjectOfType<JsonRead>(); // العثور على سكربت JsonRead في المشهد
-
+        jsonRead = FindFirstObjectByType<JsonRead>(); 
         if (jsonRead != null && jsonRead.banditlist.banditlist.Length > 0)
         {
             Duckbandit = jsonRead.banditlist.banditlist[0];
-            Initialize(Duckbandit, true);  // تهيئة البط
+            Initialize(Duckbandit, true); 
             Donaldbandit = jsonRead.banditlist.banditlist[1];
-            Initialize(Donaldbandit, false);  // تهيئة دونالد
+            Initialize(Donaldbandit, false); 
         }
         else
         {
@@ -33,27 +32,24 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    // تهيئة البيانات للأعداء
-    // دالة Initialize
     public void Initialize(Bandits banditData, bool isDuck)
     {
         if (isDuck)
         {
             Duckbandit = banditData;
             DuckcurrentHealth = banditData.health;
-            DuckUpdateHealthUI();  // تحديث واجهة المستخدم للبطة
+            DuckUpdateHealthUI();  
         }
         else
         {
             Donaldbandit = banditData;
             DonaldcurrenrHealth = banditData.health;
-            DonaldUpdateHealthUI();  // تحديث واجهة المستخدم لDonald
+            DonaldUpdateHealthUI(); 
         }
         Debug.Log("Initializing enemy: " + banditData.name + " with health: " + banditData.health);
     }
 
 
-    // التعامل مع الضرر الذي يتعرض له العدو
     public void DamageEnemey(int damage, bool isDuck)
     {
         if (isDuck)
@@ -82,7 +78,6 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    // تحديث واجهة المستخدم الخاصة بالبط
     public void DuckUpdateHealthUI()
     {
         if (Duckhealthimg == null)
@@ -100,8 +95,6 @@ public class EnemyHealth : MonoBehaviour
         Duckhealthimg.fillAmount = healthFraction;
         Debug.Log("Duck enemy health updated: " + DuckcurrentHealth);
     }
-
-    // تحديث واجهة المستخدم الخاصة بدونالد
     public void DonaldUpdateHealthUI()
     {
         if (DonaldhealthImg == null)
@@ -112,7 +105,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (Donaldbandit == null)
         {
-            Debug.LogError("Donaldbandit data is not assigned!");  // اضافة التحقق هنا
+            Debug.LogError("Donaldbandit data is not assigned!"); 
             return;
         }
 
@@ -122,7 +115,6 @@ public class EnemyHealth : MonoBehaviour
     }
 
 
-    // فتح الباب بعد تدمير العدو
     private void OpenDoor()
     {
         if (door != null)
@@ -138,9 +130,8 @@ public class EnemyHealth : MonoBehaviour
             EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
             if (enemyHealth != null)
             {
-                // تحديد من هو العدو الذي تلقى الضرر
-                bool isDuck = collision.gameObject.name.Contains("Duck"); // افترض أن اسم الكائن يحتوي على "Duck" للعدو البط
-                enemyHealth.DamageEnemey(20, isDuck); // تمرير معلومات الطلقات
+                bool isDuck = collision.gameObject.name.Contains("Duck"); 
+                enemyHealth.DamageEnemey(20, isDuck); 
             }
             else
             {
