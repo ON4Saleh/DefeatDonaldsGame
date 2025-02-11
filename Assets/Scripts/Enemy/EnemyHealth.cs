@@ -60,11 +60,11 @@ public class EnemyHealth : MonoBehaviour
                 DuckcurrentHealth = 0;
                 PlayerHealth.instance.UpdateScore(10);
                 Destroy(gameObject);
-                OpenDoor();
+                door.OpenDoor();
             }
             DuckUpdateHealthUI();
         }
-        else
+        else if(!isDuck)
         {
             DonaldcurrenrHealth -= damage;
             if (DonaldcurrenrHealth <= 0)
@@ -72,7 +72,7 @@ public class EnemyHealth : MonoBehaviour
                 DonaldcurrenrHealth = 0;
                 PlayerHealth.instance.UpdateScore(10);
                 Destroy(gameObject);
-                OpenDoor();
+                door.OpenDoor();
             }
             DonaldUpdateHealthUI();
         }
@@ -115,13 +115,6 @@ public class EnemyHealth : MonoBehaviour
     }
 
 
-    private void OpenDoor()
-    {
-        if (door != null)
-        {
-            door.OpenDoor();
-        }
-    }
 
     void OnCollisionEnter(Collision collision)
     {

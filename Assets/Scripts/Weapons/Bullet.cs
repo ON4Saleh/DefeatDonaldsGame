@@ -7,12 +7,24 @@ public class Bullet : MonoBehaviour
     [SerializeField] private GameObject impactEffect;
     [SerializeField] private GameObject bulletHolePrefab;
     [SerializeField] private float bulletLifetime = 3f;
-    public float bulletSpeed;
+    public float bulletSpeed = 20f;
 
     [Header("Bullet Health Era")]
     public BulletType bulletType;
     public int damage = 20;
     public bool damageEnemy, damagePlayer;
+
+
+    private void Start()
+    {
+        Destroy(gameObject, bulletLifetime);
+    }
+
+    private void Update()
+    {
+        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player") && bulletType == BulletType.EnemyBullet)
@@ -25,17 +37,15 @@ public class Bullet : MonoBehaviour
             EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
             if (enemyHealth != null)
             {
-                bool isDuck = collision.gameObject.name.Contains("Duck"); 
+                bool isDuck = collision.gameObject.name.Contains("Duck");
                 enemyHealth.DamageEnemey(damage, isDuck);
             }
         }
-
         //if (impactEffect != null)
         //{
         //    ContactPoint contact = collision.contacts[0];
         //    Instantiate(impactEffect, contact.point, Quaternion.identity);
         //}
-
         if (bulletHolePrefab != null)
         {
             ContactPoint contact = collision.contacts[0];
@@ -44,10 +54,9 @@ public class Bullet : MonoBehaviour
             Destroy(bulletHole, 2f);
         }
 
-        gameObject.SetActive(false);
+        Destroy(gameObject, 0.1f); 
+
     }
-
-
     public enum BulletType
     {
         PlayerBullet,

@@ -13159,6 +13159,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4244113901689226, guid: 836ca07fc69b4184ca14265c7d24030d, type: 3}
   m_PrefabInstance: {fileID: 1376660790}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1116111336 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5438372850438927862, guid: e7f6ac88d1b57a44e9eea5ad4f307ffc, type: 3}
+  m_PrefabInstance: {fileID: 6819370033018234629}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1118716812
 GameObject:
   m_ObjectHideFlags: 0
@@ -20051,8 +20056,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b9d5f7464016e43a44620724ceb76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Duckhealthimg: {fileID: 0}
-  DonaldhealthImg: {fileID: 0}
+  Duckhealthimg: {fileID: 1343098331}
+  DonaldhealthImg: {fileID: 399646200}
   DuckcurrentHealth: 0
   DonaldcurrenrHealth: 0
   door: {fileID: 0}
@@ -20685,7 +20690,7 @@ PrefabInstance:
     - target: {fileID: 8896017072944547449, guid: 5b9b9749fe2347b4895171244ed93a5d, type: 3}
       propertyPath: bulletPrefab
       value: 
-      objectReference: {fileID: 1493398657}
+      objectReference: {fileID: 1116111336}
     - target: {fileID: 8896017072944547449, guid: 5b9b9749fe2347b4895171244ed93a5d, type: 3}
       propertyPath: playerCamera
       value: 
@@ -22476,7 +22481,7 @@ MonoBehaviour:
   fieldOfView: 85
   currentState: 
   eyeHeight: 0
-  door: {fileID: 0}
+  door: {fileID: 1486551392}
 --- !u!136 &1840394302
 CapsuleCollider:
   m_ObjectHideFlags: 0

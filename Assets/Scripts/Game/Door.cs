@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public Animator animator;
+    [SerializeField] Animator animator;
 
     private void Start()
     {
@@ -11,6 +11,11 @@ public class Door : MonoBehaviour
 
     public void OpenDoor()
     {
-        animator.SetBool("isOpen", true); 
+        animator.SetBool("isOpen", true);
+    }
+
+    public void CloseDoor()
+    {
+        animator.SetBool("isOpen", false);
     }
 }
