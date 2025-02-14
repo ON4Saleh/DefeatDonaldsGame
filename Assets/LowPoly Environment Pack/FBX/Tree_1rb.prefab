@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100008, guid: c52a1ad28de5ec447a225e11be0fe132, type: 3}
       propertyPath: m_Name
-      value: Tree_1 1
+      value: Tree_1rb
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: c52a1ad28de5ec447a225e11be0fe132, type: 3}
       propertyPath: m_LocalScale.x
@@ -74,6 +74,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100008, guid: c52a1ad28de5ec447a225e11be0fe132, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4159386422656753691}
+    - targetCorrespondingSourceObject: {fileID: 100008, guid: c52a1ad28de5ec447a225e11be0fe132, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6319194248148993322}
   m_SourcePrefab: {fileID: 100100000, guid: c52a1ad28de5ec447a225e11be0fe132, type: 3}
 --- !u!1 &4507429478538439398 stripped
 GameObject:
@@ -128,3 +131,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.13, y: 11.86, z: 8.4}
   m_Center: {x: 0, y: 6.73, z: 0.99}
+--- !u!114 &-6319194248148993322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4507429478538439398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67f1c5d4883d6db46bef7a1676f996ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 5761014981280509251}
+  impactEffect: {fileID: 0}
+  bulletHolePrefab: {fileID: 0}
+  bulletLifetime: 3
+  bulletSpeed: 20
+  bulletType: 0
+  damage: 20
+  damageEnemy: 1
+  damagePlayer: 0
