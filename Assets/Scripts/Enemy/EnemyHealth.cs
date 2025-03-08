@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class EnemyHealth : MonoBehaviour
 {
     private Bandits Duckbandit;
@@ -72,7 +72,7 @@ public class EnemyHealth : MonoBehaviour
                 DonaldcurrenrHealth = 0;
                 PlayerHealth.instance.UpdateScore(10);
                 Destroy(gameObject);
-                door.OpenDoor();
+                SceneManager.LoadScene("GameOver");
             }
             DonaldUpdateHealthUI();
         }

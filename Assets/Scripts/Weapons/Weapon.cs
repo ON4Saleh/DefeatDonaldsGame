@@ -234,10 +234,6 @@ public class Weapon : MonoBehaviour
                 EnemyFireBullet();
                 yield return new WaitForSeconds(shootingDelay);
             }
-
-            yield return new WaitForSeconds(burstDelay);
-
-            yield return new WaitForSeconds(1f);
         }
 
         canShoot = true;
