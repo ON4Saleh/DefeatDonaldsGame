@@ -41,11 +41,12 @@ public class Bullet : MonoBehaviour
                 enemyHealth.DamageEnemey(damage, isDuck);
             }
         }
-        //if (impactEffect != null)
-        //{
-        //    ContactPoint contact = collision.contacts[0];
-        //    Instantiate(impactEffect, contact.point, Quaternion.identity);
-        //}
+        if (impactEffect != null)
+        {
+            Instantiate(impactEffect, collision.transform.position, Quaternion.LookRotation(transform.forward));
+        }
+
+
         if (bulletHolePrefab != null)
         {
             ContactPoint contact = collision.contacts[0];

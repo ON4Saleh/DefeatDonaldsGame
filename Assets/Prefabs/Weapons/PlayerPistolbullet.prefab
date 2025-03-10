@@ -156,6 +156,7 @@ MonoBehaviour:
   impactEffect: {fileID: 7583520765596578208, guid: 9908c7a5e6477894eaba2520b529f99e, type: 3}
   bulletHolePrefab: {fileID: 2215578394373525629, guid: ae1a5d63bce3679439a9ee0ab88d7bed, type: 3}
   bulletLifetime: 3
+  bulletSpeed: 0
   bulletType: 0
   damage: 0
   damageEnemy: 1
