@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-
+using TMPro;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
@@ -30,6 +30,8 @@ public class Weapon : MonoBehaviour
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;
     public bool weaponisActive;
+
+    [SerializeField] private TMP_Text shootingModeText;
     private enum ShootingMode
     {
         Single,
@@ -45,6 +47,7 @@ public class Weapon : MonoBehaviour
         enemy = GetComponentInParent<Enemy>();
         playerCamera = Camera.main;
         textsUI = GetComponent<TextsUI>();
+        UpdateShootingModeText();
     }
 
     private void Update()
@@ -52,7 +55,10 @@ public class Weapon : MonoBehaviour
         if (weaponisActive)
         {
             if (isReloading) return;
-
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                SwitchShootingMode();
+            }
             if (Input.GetKeyDown(KeyCode.R) && currentBulletCount < maxBulletCapacity)
             {
                 StartCoroutine(Reload());
@@ -143,7 +149,6 @@ public class Weapon : MonoBehaviour
         }
         canShoot = true;
     }
-
     private void FireBullet()
     {
         if (currentBulletCount <= 0)
@@ -152,20 +157,11 @@ public class Weapon : MonoBehaviour
         }
 
         currentBulletCount--;
-        // Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
-
-        //   GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-        //   bullet.transform.forward = shootingDirection;
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         bullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.forward * bulletSpeed;
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         bulletScript.damage = 20;
         Debug.Log("Bullet fired with damage: " + bulletScript.damage);
-
-      //  Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
-       // bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);
-       // GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-       
         StartCoroutine(DestroyBulletAfterDelay(bullet, bulletLifetime));
     }
     private Vector3 CalculateDirectionAndSpread()
@@ -253,5 +249,18 @@ public class Weapon : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         Destroy(bullet);
+    }
+    private void SwitchShootingMode()
+    {
+        currentShootingMode = (ShootingMode)(((int)currentShootingMode + 1) % System.Enum.GetValues(typeof(ShootingMode)).Length);
+        UpdateShootingModeText();
+        Debug.Log("Current Shooting Mode: " + currentShootingMode);
+    }
+    private void UpdateShootingModeText()
+    {
+        if (shootingModeText != null)
+        {
+            shootingModeText.text = "Mode: " + currentShootingMode.ToString();
+        }
     }
 }
