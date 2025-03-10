@@ -25,6 +25,12 @@ public class PickUp : MonoBehaviour
     {
         mainCamera = Camera.main;
         textsUI = GetComponent<TextsUI>();
+        if (textsUI == null)
+        {
+            Debug.LogError($"{gameObject.name}: TextsUI component not found!");
+            enabled = false;
+            return;
+        }
         if (mainCamera == null)
         {
             Debug.LogError($"{gameObject.name}: Main camera not found! PickUp system will be disabled.");

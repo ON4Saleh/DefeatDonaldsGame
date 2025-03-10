@@ -198,7 +198,11 @@ public class Weapon : MonoBehaviour
 
     private void EnemyFireBullet()
     {
-        if (currentBulletCount <= 0) return;
+        if (currentBulletCount <= 0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
 
         currentBulletCount--;
         Vector3 shootingDirection = EnemyCalculateDirectionAndSpread().normalized;
