@@ -58,7 +58,7 @@ public class EnemyHealth : MonoBehaviour
             if (DuckcurrentHealth <= 0)
             {
                 DuckcurrentHealth = 0;
-                PlayerHealth.instance.UpdateScore(10);
+                PlayerHealth.instance.UpdateScore(damage);
                 Destroy(gameObject);
                 door.OpenDoor();
             }

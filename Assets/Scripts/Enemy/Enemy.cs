@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     public float sightDistance = 20f;
     public float fieldOfView = 85f;
     [SerializeField] string currentState;
-
+    private Transform playerTransform; 
     private GameObject EnemyWeaponHolder;
     [SerializeField] private float eyeHeight;
     private Vector3 lastKnownPosition;
@@ -64,11 +64,16 @@ public class Enemy : MonoBehaviour
         door.OpenDoor(); 
         Destroy(gameObject);
     }
+      public void StopShootingAnimation()
+    {
+        animator.SetBool("isShooting", false);
+    }
     public bool canSeePlayer()
     {
         if (player != null)
         {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
+            playerTransform = player.transform; 
+          float distance = Vector3.Distance(transform.position, player.transform.position);
 
             if (distance < sightDistance)
             {
@@ -82,14 +87,18 @@ public class Enemy : MonoBehaviour
 
                     if (Physics.Raycast(ray, out hitInfo, sightDistance))
                     {
-                        if (hitInfo.transform.gameObject == player)
+                        while (hitInfo.transform.gameObject == player)
                         {
+                            Debug.Log("enemy can see player");
+                          
                             return true;
                         }
                     }
                 }
             }
         }
+        Debug.Log("enemy cannot see player");
+        StopShootingAnimation();
         return false;
     }
 
@@ -111,7 +120,7 @@ public class Enemy : MonoBehaviour
         }
         else if (currentState != "AttackState" && animator.GetBool("isShooting"))
         {
-            animator.SetBool("isShooting", false);
+            //animator.SetBool("isShooting", false);
             EnemyWeaponHolder.gameObject.SetActive(false);
             navMeshAgent.speed = 3.5f;
 

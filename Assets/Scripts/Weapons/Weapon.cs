@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] float bulletSpeed = 100f;
     [SerializeField] float bulletLifetime = 3f;
 
-    [SerializeField] float shootingDelay = 0.2f;
+    [SerializeField] float shootingDelay = 1f;
     [SerializeField] float burstDelay = 0.5f;
     [SerializeField] int bulletsPerBurst = 3;
     [SerializeField] float spreadIntensity = 0.1f;
@@ -116,6 +116,7 @@ public class Weapon : MonoBehaviour
     {
         animator.SetBool("IsShooting", isShooting);
     }
+  
 
     private IEnumerator SingleFire()
     {
@@ -153,9 +154,11 @@ public class Weapon : MonoBehaviour
     {
         if (currentBulletCount <= 0)
         {
+            Debug.Log("Out of ammo!");
+            canShoot = false;
+          //  StartCoroutine(Reload()); 
             return;
         }
-
         currentBulletCount--;
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         bullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.forward * bulletSpeed;
@@ -166,6 +169,7 @@ public class Weapon : MonoBehaviour
     }
     private Vector3 CalculateDirectionAndSpread()
     {
+        Debug.Log("Player Position: " + playerTransform.position);
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
         Vector3 targetPoint;
@@ -198,13 +202,14 @@ public class Weapon : MonoBehaviour
 
     private void EnemyFireBullet()
     {
+        currentBulletCount--;
+        Debug.Log("current bullet count"+ currentBulletCount);
         if (currentBulletCount <= 0)
         {
             StartCoroutine(Reload());
             return;
         }
 
-        currentBulletCount--;
         Vector3 shootingDirection = EnemyCalculateDirectionAndSpread().normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
@@ -229,10 +234,18 @@ public class Weapon : MonoBehaviour
         canShoot = false;
         while (enemy.canSeePlayer())
         {
-            for (int i = 0; i < bulletsPerBurst; i++)
+            if (currentBulletCount > 0)
             {
                 EnemyFireBullet();
                 yield return new WaitForSeconds(shootingDelay);
+            }
+            else
+            {
+                break;
+            }
+            if (currentBulletCount <= 0) 
+            {
+                break; 
             }
         }
 

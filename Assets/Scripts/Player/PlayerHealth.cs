@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
@@ -9,10 +10,10 @@ public class PlayerHealth : MonoBehaviour
     public float playerMoneyLevel;
     public float maxWaterLevel = 1000;
     public float maxMoneyLevel = 1000;
-    public int respawnAttempts = 2;
+    public int respawnAttempts = 1;
     public int playerScore = 0;
     private bool isRespawning = false;
-
+    private bool hasRespawned = false;
     [Header("Player UI")]
     public Image waterLevelImg;
     public Image moneyLevelImg;
@@ -45,24 +46,35 @@ public class PlayerHealth : MonoBehaviour
 
         if (playerWaterLevel < 0)
         {
-            playerWaterLevel = 0; 
-            RespawnPlayer(); 
+            playerWaterLevel = 0;
+            HandlePlayerDeath(); 
         }
 
-        UpdateHealthUI(); 
+        UpdateHealthUI();
     }
 
+    private void HandlePlayerDeath()
+    {
+        if (!hasRespawned)
+        {
+            RespawnPlayer();
+        }
+        else
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+    }
     private void RespawnPlayer()
     {
-        if (isRespawning) return; 
+        if (isRespawning) return;
         isRespawning = true;
 
-        transform.position = Vector3.zero; 
-        playerWaterLevel = maxWaterLevel; 
+        transform.position = Vector3.zero;
+        playerWaterLevel = maxWaterLevel;
         UpdateHealthUI();
         isRespawning = false;
+        hasRespawned = true; 
     }
-
     public void UpdateHealthUI()
     {
         float Wfraction = playerWaterLevel / maxWaterLevel;
