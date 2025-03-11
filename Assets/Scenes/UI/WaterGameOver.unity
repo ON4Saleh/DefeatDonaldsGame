@@ -245,14 +245,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3107511, g: 0.73504233, b: 0.8113208, a: 1}
+  m_Color: {r: 0.15577787, g: 0.3968639, b: 0.4415095, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: deac7703a1461a641b5945564af2a9c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dba6c4bbf60ebee4a8538ba74c5e78cc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -551,6 +551,7 @@ GameObject:
   - component: {fileID: 968679910}
   - component: {fileID: 968679909}
   - component: {fileID: 968679908}
+  - component: {fileID: 968679912}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -641,6 +642,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &968679912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968679907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ebb2502fe05c343bb150715f011534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &969521814
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,8 +1045,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b75487dd37182194dbe230571127496b, type: 3}
-  m_Resource: {fileID: 8300000, guid: b75487dd37182194dbe230571127496b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f24b0ddb783ad2b4d9ab3cd2eee78522, type: 3}
+  m_Resource: {fileID: 8300000, guid: f24b0ddb783ad2b4d9ab3cd2eee78522, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1176,7 +1189,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: looser hna kman
+  m_text: blo2 blo2 blo2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1210,7 +1223,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0

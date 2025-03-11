@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ResolutionManager : MonoBehaviour
 {
     public Dropdown resolutionDropdown;
-    public FullScreenMode fullscreenMode = FullScreenMode.FullScreenWindow; // ??? ??? ?????? ?????????
+    public FullScreenMode fullscreenMode = FullScreenMode.FullScreenWindow; 
 
     void Start()
     {

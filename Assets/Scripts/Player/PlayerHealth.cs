@@ -61,7 +61,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("GameOver");
+            SceneManager.LoadScene("WaterGameOver");
         }
     }
     private void RespawnPlayer()
