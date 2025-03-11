@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour
     public int damage = 20;
     public bool damageEnemy, damagePlayer;
 
+    private EnemyHealth enemyhealth;
 
     private void Start()
     {
@@ -24,13 +25,52 @@ public class Bullet : MonoBehaviour
     {
         transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
     }
+    private GameObject shooter; // ????? ?????? ???? ??? ?????
+
+    public void SetShooter(GameObject shooter)
+    {
+        this.shooter = shooter;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player") && bulletType == BulletType.EnemyBullet)
         {
-            Debug.Log("Bullet hit player: " + collision.gameObject.name);
-            PlayerHealth.instance.DamagePlayer(50);
+            int enemyDamage;
+
+            if (shooter != null)
+            {
+                Debug.Log("Player hit by bullet from: " + shooter.name); 
+                if (shooter.name == "WaterGunEnemy")
+                {
+                    EnemyHealth enemyHealth = shooter.GetComponentInParent<EnemyHealth>(); 
+                    if (enemyHealth != null)
+                    {
+                        enemyDamage = enemyHealth.DuckDamage;
+                        PlayerHealth.instance.DamagePlayer(enemyDamage, "Duck");
+                        Debug.Log("duck damage" + enemyDamage);
+                    }
+                    else
+                    {
+                        Debug.LogError("EnemyHealth not found on shooter: " + shooter.name);
+                    }
+                }
+
+                else if (shooter.name == "MoneyWatergun")
+                {
+                    EnemyHealth enemyHealth = shooter.GetComponentInParent<EnemyHealth>(); 
+                    if (enemyHealth != null)
+                    {
+                        enemyDamage = enemyHealth.DonaldDamage;
+                        PlayerHealth.instance.DamagePlayer(enemyDamage, "Donald");
+                        Debug.Log("donald damage" + enemyDamage);
+                    }
+                    else
+                    {
+                        Debug.LogError("EnemyHealth not found on shooter: " + shooter.name);
+                    }
+                }
+            }
         }
         else if (collision.gameObject.CompareTag("Enemy") && bulletType == BulletType.PlayerBullet)
         {

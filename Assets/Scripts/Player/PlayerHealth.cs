@@ -32,7 +32,7 @@ public class PlayerHealth : MonoBehaviour
         scoreText.text = "Score " + playerScore;
     }
 
-    public void DamagePlayer(int damage)
+    public void DamagePlayer(int damage, string enemyType)
     {
         Debug.Log("Player hit! Damage: " + damage);
 

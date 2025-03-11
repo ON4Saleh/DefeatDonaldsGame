@@ -203,7 +203,7 @@ public class Weapon : MonoBehaviour
     private void EnemyFireBullet()
     {
         currentBulletCount--;
-        Debug.Log("current bullet count"+ currentBulletCount);
+        Debug.Log("current bullet count" + currentBulletCount);
         if (currentBulletCount <= 0)
         {
             StartCoroutine(Reload());
@@ -214,6 +214,13 @@ public class Weapon : MonoBehaviour
 
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
         bullet.transform.forward = shootingDirection;
+
+        // ????? ???? ??? ????? ?? ???????
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            bulletScript.SetShooter(gameObject); // ????? ???? ??? ?????
+        }
 
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(shootingDirection * bulletSpeed, ForceMode.Impulse);

@@ -13,6 +13,9 @@ public class EnemyHealth : MonoBehaviour
     public int DuckcurrentHealth;
     public int DonaldcurrenrHealth;
     public Door door;
+    [Header("Damage")]
+    public int DuckDamage;
+    public int DonaldDamage;
 
     private JsonRead jsonRead;
 
@@ -38,15 +41,17 @@ public class EnemyHealth : MonoBehaviour
         {
             Duckbandit = banditData;
             DuckcurrentHealth = banditData.health;
+            DuckDamage = banditData.damage;
             DuckUpdateHealthUI();  
         }
         else
         {
             Donaldbandit = banditData;
             DonaldcurrenrHealth = banditData.health;
+            DonaldDamage = banditData.damage;
             DonaldUpdateHealthUI(); 
         }
-        Debug.Log("Initializing enemy: " + banditData.name + " with health: " + banditData.health);
+        Debug.Log("Initializing enemy: " + banditData.name + " with health: " + banditData.health + "damage" + banditData.damage);
     }
 
 

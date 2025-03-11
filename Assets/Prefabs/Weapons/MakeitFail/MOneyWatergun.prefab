@@ -183,7 +183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c2ffb391052887744aca598339c2986f, type: 3}
       propertyPath: m_Name
-      value: MOneyWatergun
+      value: MoneyWatergun
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c2ffb391052887744aca598339c2986f, type: 3}
       propertyPath: m_IsActive
