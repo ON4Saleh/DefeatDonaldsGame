@@ -36,7 +36,7 @@ public class SaveManager : MonoBehaviour
             playerHealth.playerWaterLevel = data.playerWaterLevel; 
             playerHealth.playerMoneyLevel = data.playerMoneyLevel; 
             playerHealth.playerScore = data.score; 
-            playerHealth.UpdateHealthUI();
+            playerHealth.UpdateMoneyHealthUI();
             playerHealth.UpdateScoreUI(); 
             Debug.Log("Player data loaded from " + saveFilePath);
         }

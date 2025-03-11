@@ -47,7 +47,7 @@ public class Bullet : MonoBehaviour
                     if (enemyHealth != null)
                     {
                         enemyDamage = enemyHealth.DuckDamage;
-                        PlayerHealth.instance.DamagePlayer(enemyDamage, "Duck");
+                        PlayerHealth.instance.DamageWaterPlayer(enemyDamage, "Duck");
                         Debug.Log("duck damage" + enemyDamage);
                     }
                     else
@@ -62,7 +62,7 @@ public class Bullet : MonoBehaviour
                     if (enemyHealth != null)
                     {
                         enemyDamage = enemyHealth.DonaldDamage;
-                        PlayerHealth.instance.DamagePlayer(enemyDamage, "Donald");
+                        PlayerHealth.instance.DamageMoneyPlayer(enemyDamage, "Donald");
                         Debug.Log("donald damage" + enemyDamage);
                     }
                     else

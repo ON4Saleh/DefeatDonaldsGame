@@ -215,11 +215,10 @@ public class Weapon : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
         bullet.transform.forward = shootingDirection;
 
-        // ????? ???? ??? ????? ?? ???????
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {
-            bulletScript.SetShooter(gameObject); // ????? ???? ??? ?????
+            bulletScript.SetShooter(gameObject); 
         }
 
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();

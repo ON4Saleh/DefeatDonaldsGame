@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     [Header("Player Stats")]
     public float playerWaterLevel;
     public float playerMoneyLevel;
+
     public float maxWaterLevel = 1000;
     public float maxMoneyLevel = 1000;
     public int respawnAttempts = 1;
@@ -17,6 +18,7 @@ public class PlayerHealth : MonoBehaviour
     [Header("Player UI")]
     public Image waterLevelImg;
     public Image moneyLevelImg;
+
     public TextMeshProUGUI scoreText;
     public static PlayerHealth instance;
 
@@ -32,7 +34,7 @@ public class PlayerHealth : MonoBehaviour
         scoreText.text = "Score " + playerScore;
     }
 
-    public void DamagePlayer(int damage, string enemyType)
+    public void DamageWaterPlayer(int damage, string enemyType)
     {
         Debug.Log("Player hit! Damage: " + damage);
 
@@ -47,13 +49,32 @@ public class PlayerHealth : MonoBehaviour
         if (playerWaterLevel < 0)
         {
             playerWaterLevel = 0;
-            HandlePlayerDeath(); 
+            HandlePlayerWatrDeath(); 
         }
 
-        UpdateHealthUI();
+        UpdateWaterHealthUI();
     }
+    public void DamageMoneyPlayer(int damage, string enemyType)
+    {
+        Debug.Log("Player hit! Damage: " + damage);
 
-    private void HandlePlayerDeath()
+        if (damage <= 0)
+        {
+            Debug.LogError("Damage value is zero or negative. Cannot apply damage.");
+            return;
+        }
+
+        playerMoneyLevel -= damage;
+
+        if (playerMoneyLevel < 0)
+        {
+            playerMoneyLevel = 0;
+            HandlePlayerMoneyDeath();
+        }
+
+        UpdateMoneyHealthUI();
+    }
+    private void HandlePlayerWatrDeath()
     {
         if (!hasRespawned)
         {
@@ -64,6 +85,17 @@ public class PlayerHealth : MonoBehaviour
             SceneManager.LoadScene("WaterGameOver");
         }
     }
+    private void HandlePlayerMoneyDeath()
+    {
+        if (!hasRespawned)
+        {
+            RespawnPlayer();
+        }
+        else
+        {
+            SceneManager.LoadScene("MoneyGameOver");
+        }
+    }
     private void RespawnPlayer()
     {
         if (isRespawning) return;
@@ -71,18 +103,21 @@ public class PlayerHealth : MonoBehaviour
 
         transform.position = Vector3.zero;
         playerWaterLevel = maxWaterLevel;
-        UpdateHealthUI();
+        UpdateWaterHealthUI();
+        UpdateMoneyHealthUI();
         isRespawning = false;
         hasRespawned = true; 
     }
-    public void UpdateHealthUI()
+    public void UpdateWaterHealthUI()
     {
         float Wfraction = playerWaterLevel / maxWaterLevel;
         waterLevelImg.fillAmount = Wfraction;
+    }
+    public void UpdateMoneyHealthUI()
+    {
         float Mfraction = playerMoneyLevel / maxMoneyLevel;
         moneyLevelImg.fillAmount = Mfraction;
     }
-
     public void UpdateScore(int scoreChange)
     {
         playerScore += scoreChange;
