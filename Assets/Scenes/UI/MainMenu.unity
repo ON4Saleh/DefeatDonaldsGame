@@ -981,7 +981,7 @@ RectTransform:
   m_GameObject: {fileID: 297831667}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1389401, y: 1.066462, z: 1.0354}
+  m_LocalScale: {x: 1.0364355, y: 1.3198535, z: 1.0354}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1697220952}
@@ -4495,7 +4495,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1566372121}
-  - component: {fileID: 1566372122}
   - component: {fileID: 1566372123}
   - component: {fileID: 1566372124}
   m_Layer: 5
@@ -4533,20 +4532,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1566372122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1566372120}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 107b4b15700c52248aedfcbc934dc234, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resolutionDropdown: {fileID: 0}
-  fullscreenMode: 1
 --- !u!114 &1566372123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4938,19 +4923,7 @@ MonoBehaviour:
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1566372122}
-        m_TargetAssemblyTypeName: ResolutionManager, Assembly-CSharp
-        m_MethodName: OnResolutionChanged
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1671838850
 MonoBehaviour:
@@ -5961,7 +5934,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -39.15448, y: 136}
+  m_AnchoredPosition: {x: -39.15448, y: 7}
   m_SizeDelta: {x: 1998.3091, y: 1250.0176}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1936998191
