@@ -12,7 +12,6 @@ public class RangeDetector : MonoBehaviour
 
     public GameObject UpdateDetector()
     {
-        // Perform sphere check
         Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, detectionMask);
 
         if (colliders.Length > 0)
@@ -26,7 +25,6 @@ public class RangeDetector : MonoBehaviour
         return DetectedTarget;
     }
 
-    // Debug visualization
     private void OnDrawGizmos()
     {
         if (!showDebugVisuals || this.enabled == false) return;
