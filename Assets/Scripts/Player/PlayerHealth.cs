@@ -115,7 +115,7 @@ public class PlayerHealth : MonoBehaviour
     }
     public void UpdateMoneyHealthUI()
     {
-        float Mfraction = playerMoneyLevel / maxMoneyLevel;
+        float Mfraction = playerMoneyLevel / maxMoneyLevel; 
         moneyLevelImg.fillAmount = Mfraction;
     }
     public void UpdateScore(int scoreChange)
